@@ -1,0 +1,36 @@
+FROM resin/%%RESIN_MACHINE_NAME%%-python:3
+
+# Install dependencies
+RUN apt-get update &&\
+  apt-get install -yq \
+    nginx \
+    pulseaudio \
+    v4l-utils \
+    libopus-dev \
+    libvpx-dev \
+  && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /usr/src/app
+
+# Build libsrtp
+RUN wget https://github.com/cisco/libsrtp/archive/v2.2.0.tar.gz \
+    && tar xvf v2.2.0.tar.gz \
+    && cd libsrtp-2.2.0 \
+    && ./configure \
+    && make \
+    && make install \
+    && make runtest \
+    && cd ..; rm -rf ./*
+
+COPY ./app/ /usr/src/app/
+
+
+
+# Enable the v4l2 driver for the Raspberry Pi camera
+RUN printf "bcm2835-v4l2\n" >> /etc/modules
+RUN pip install --upgrade pip && pip install aiortc aiohttp
+
+# Enable systemd
+ENV INITSYSTEM on
+
+CMD ["/bin/bash", "/usr/src/app/start.sh"]
