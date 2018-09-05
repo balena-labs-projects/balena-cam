@@ -28,7 +28,7 @@ COPY ./app/ /usr/src/app/
 
 # Enable the v4l2 driver for the Raspberry Pi camera
 RUN printf "bcm2835-v4l2\n" >> /etc/modules
-RUN pip install --upgrade pip && pip install aiortc aiohttp
+RUN pip install --upgrade pip && pip install opencv-python --index-url https://www.piwheels.org/simple && pip install aiortc aiohttp
 
 # Enable systemd
 ENV INITSYSTEM on
