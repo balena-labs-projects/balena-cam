@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>balena cam</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+
+<body style="padding-top: 10%">
+
+  <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#"><img style="width: 15%; height: auto;" src="./balena.svg"> balena <b>cam</b></a>
+      <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#collapsibleNavbar" aria-expanded="false">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse collapse" id="collapsibleNavbar" style="">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item navbar-brand">
+            <a class="nav-link active" href="https://github.com/resin-io-playground/balena-cam">
+              <i class="fa fa-github" style="font-size: 150%"></i>
+          </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="d-flex justify-content-center align-items-center">
+      <div class="p5 embed-responsive embed-responsive-16by9 position-relative">
+        <video id="video" class="embed-responsive-item" autoplay="true"></video>
+      </div>
+    </div>
+  </div>
+
+  <nav class="navbar navbar-dark bg-dark fixed-bottom">
+    <div class="container align-items-center">
+      <p class="navbar-brand">is an open source project by
+        <a href="https://www.balena.io/" > <img style="width: 20%; height: auto;" src="./balena-logo.svg"> </a>
+      </p>
+    </div>
+  </nav>
+
+  <script src="client.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+</body>
+</html>

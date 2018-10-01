@@ -16,12 +16,20 @@ class LocalVideoStream(VideoStreamTrack):
         return frame_from_bgr(frame)
 
 async def index(request):
-    content = open(os.path.join(ROOT, 'index.html'), 'r').read()
+    content = open(os.path.join(ROOT, 'client/index.html'), 'r').read()
     return web.Response(content_type='text/html', text=content)
 
 async def javascript(request):
-    content = open(os.path.join(ROOT, 'client.js'), 'r').read()
+    content = open(os.path.join(ROOT, 'client/client.js'), 'r').read()
     return web.Response(content_type='application/javascript', text=content)
+
+async def balena(request):
+    content = open(os.path.join(ROOT, 'client/balena.svg'), 'r').read()
+    return web.Response(content_type='image/svg+xml', text=content)
+
+async def balena_logo(request):
+    content = open(os.path.join(ROOT, 'client/balena-logo.svg'), 'r').read()
+    return web.Response(content_type='image/svg+xml', text=content)
 
 pcs = []
 local_video = LocalVideoStream()
@@ -57,6 +65,8 @@ if __name__ == '__main__':
     app = web.Application()
     app.on_shutdown.append(on_shutdown)
     app.router.add_get('/', index)
+    app.router.add_get('/balena-logo.svg', balena_logo)
+    app.router.add_get('/balena.svg', balena)
     app.router.add_get('/client.js', javascript)
     app.router.add_post('/offer', offer)
     web.run_app(app, port=3000)

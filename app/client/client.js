@@ -67,9 +67,7 @@ function negotiate() {
 }
 
 function start() {
-    document.getElementById('start').style.display = 'none';
     negotiate();
-    document.getElementById('stop').style.display = 'inline-block';
 }
 
 function stop() {
@@ -79,3 +77,4 @@ function stop() {
         pc.close();
     }, 500);
 }
+start()
