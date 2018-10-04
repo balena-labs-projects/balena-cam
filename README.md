@@ -1,2 +1,2 @@
-# resin-cam-broadcast
-Share your resin device's camera feed with multiple peers.
+# balena-cam
+Share your balena device's camera feed.
