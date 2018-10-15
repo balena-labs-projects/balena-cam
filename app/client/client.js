@@ -1,4 +1,4 @@
-var pc = new RTCPeerConnection();
+var pc = new RTCPeerConnection({sdpSemantics: 'unified-plan'});
 
 // register some listeners to help debugging
 pc.addEventListener('icegatheringstatechange', function() {
@@ -15,7 +15,7 @@ pc.addEventListener('signalingstatechange', function() {
 
 // connect audio / video
 pc.addEventListener('track', function(evt) {
-    console.log('incomming track')
+    console.log('incoming track')
     console.log(evt);
     if (evt.track.kind == 'video') {
         document.getElementById('video').srcObject = evt.streams[0];
@@ -26,7 +26,8 @@ pc.addEventListener('track', function(evt) {
 });
 
 function negotiate() {
-    return pc.createOffer({offerToReceiveVideo: true, offerToReceiveAudio: false}).then(function(offer) {
+    pc.addTransceiver('video', {direction: 'recvonly'});
+    return pc.createOffer().then(function(offer) {
         return pc.setLocalDescription(offer);
     }).then(function() {
         // wait for ICE gathering to complete
@@ -63,6 +64,8 @@ function negotiate() {
         console.log('Answer SDP');
         console.log(answer.sdp);
         return pc.setRemoteDescription(answer);
+    }).catch(function(e){
+        console.error(e);
     });
 }
 

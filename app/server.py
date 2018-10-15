@@ -1,19 +1,27 @@
 import asyncio, json, os, cv2
 from aiohttp import web
-from aiortc import (RTCPeerConnection, RTCSessionDescription, VideoStreamTrack)
-from aiortc.contrib.media import (frame_from_bgr)
+from av import VideoFrame
+from aiortc import RTCPeerConnection, RTCSessionDescription, VideoStreamTrack
+from aiortc.contrib.media import MediaPlayer
 
 ROOT = os.path.dirname(__file__)
 
 class LocalVideoStream(VideoStreamTrack):
     def __init__(self):
+        super().__init__()  # don't forget this!
         self.cap = cv2.VideoCapture(0)
         self.cap.set(3, 640)
         self.cap.set(4, 480)
+        self.data_bgr = None
 
     async def recv(self):
-        ret, frame = self.cap.read()
-        return frame_from_bgr(frame)
+        ret, cv2_frame = self.cap.read()
+        self.data_bgr = cv2_frame
+        pts, time_base = await self.next_timestamp()
+        frame = VideoFrame.from_ndarray(self.data_bgr, format='bgr24')
+        frame.pts = pts
+        frame.time_base = time_base
+        return frame
 
 async def index(request):
     content = open(os.path.join(ROOT, 'client/index.html'), 'r').read()
@@ -33,6 +41,7 @@ async def balena_logo(request):
 
 pcs = []
 local_video = LocalVideoStream()
+
 async def offer(request):
     params = await request.json()
     offer = RTCSessionDescription(
