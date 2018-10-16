@@ -6,7 +6,11 @@ pc.addEventListener('icegatheringstatechange', function() {
 }, false);
 
 pc.addEventListener('iceconnectionstatechange', function() {
-console.warn(pc.iceConnectionState);
+  console.warn(pc.iceConnectionState);
+  if (pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === failed) {
+        document.getElementById('video-container').style.display = 'none';
+        document.getElementById('fail-container').style.display = 'block';
+  }
 }, false);
 
 pc.addEventListener('signalingstatechange', function() {
@@ -18,7 +22,7 @@ pc.addEventListener('track', function(evt) {
     console.log('incoming track')
     console.log(evt);
     if (evt.track.kind == 'video') {
-        document.getElementById('spinner-container').style.display = "none";
+        document.getElementById('spinner-container').style.display = 'none';
         document.getElementById('video').srcObject = evt.streams[0];
         console.log('video elem added');
     } else {

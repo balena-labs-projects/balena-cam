@@ -80,7 +80,7 @@
 
 <body style="padding-top: 10%">
 
-  <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
     <div class="container">
       <a class="navbar-brand" href="#"><img style="width: 60%; height: auto;" src="./balena-cam.svg"></a>
       <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#collapsibleNavbar" aria-expanded="false">
@@ -113,6 +113,20 @@
       <div class="p5 embed-responsive embed-responsive-16by9 position-relative">
         <video id="video" class="embed-responsive-item" autoplay="true"></video>
       </div>
+    </div>
+  </div>
+
+  <div id="fail-container" class="container" style="display: none;">
+    <div class="d-flex justify-content-center align-items-center">
+      <h4>Connection failed.</h4>
+    </div>
+    <div class="d-flex justify-content-center align-items-center">
+      <h6>
+        Sorry!
+        <span style="font-size: 150%;">
+          <b>  :( </b>
+        </span>
+      </h6>
     </div>
   </div>
 
