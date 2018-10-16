@@ -18,6 +18,7 @@ pc.addEventListener('track', function(evt) {
     console.log('incoming track')
     console.log(evt);
     if (evt.track.kind == 'video') {
+        document.getElementById('spinner-container').style.display = "none";
         document.getElementById('video').srcObject = evt.streams[0];
         console.log('video elem added');
     } else {
