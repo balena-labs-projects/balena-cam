@@ -32,7 +32,7 @@ async def javascript(request):
     return web.Response(content_type='application/javascript', text=content)
 
 async def balena(request):
-    content = open(os.path.join(ROOT, 'client/balena.svg'), 'r').read()
+    content = open(os.path.join(ROOT, 'client/balena-cam.svg'), 'r').read()
     return web.Response(content_type='image/svg+xml', text=content)
 
 async def balena_logo(request):
@@ -75,7 +75,7 @@ if __name__ == '__main__':
     app.on_shutdown.append(on_shutdown)
     app.router.add_get('/', index)
     app.router.add_get('/balena-logo.svg', balena_logo)
-    app.router.add_get('/balena.svg', balena)
+    app.router.add_get('/balena-cam.svg', balena)
     app.router.add_get('/client.js', javascript)
     app.router.add_post('/offer', offer)
     web.run_app(app, port=3000)
