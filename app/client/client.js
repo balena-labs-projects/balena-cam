@@ -9,7 +9,7 @@ pc.addEventListener('iceconnectionstatechange', function() {
   console.warn(pc.iceConnectionState);
   if ((typeof pc.iceConnectionState !== 'undefined') && (pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'failed')) {
         document.getElementById('video-container').style.display = 'none';
-        document.getElementById('fail-container').style.display = 'block';
+        document.getElementById('fail-container').style.display = 'initial';
   }
 }, false);
 
