@@ -40,7 +40,6 @@ async def balena_logo(request):
     return web.Response(content_type='image/svg+xml', text=content)
 
 pcs = set()
-local_video = LocalVideoStream()
 
 async def offer(request):
     params = await request.json()
@@ -52,6 +51,7 @@ async def offer(request):
     pcs.add(pc)
 
     # Add local media
+    local_video = LocalVideoStream()
     pc.addTrack(local_video)
 
     @pc.on('iceconnectionstatechange')
