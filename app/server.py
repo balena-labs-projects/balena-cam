@@ -8,7 +8,7 @@ ROOT = os.path.dirname(__file__)
 
 class LocalVideoStream(VideoStreamTrack):
     def __init__(self):
-        super().__init__()  # don't forget this!
+        super().__init__()
         self.cap = cv2.VideoCapture(0)
         self.cap.set(3, 640)
         self.cap.set(4, 480)
@@ -39,7 +39,7 @@ async def balena_logo(request):
     content = open(os.path.join(ROOT, 'client/balena-logo.svg'), 'r').read()
     return web.Response(content_type='image/svg+xml', text=content)
 
-pcs = []
+pcs = set()
 local_video = LocalVideoStream()
 
 async def offer(request):
@@ -49,10 +49,17 @@ async def offer(request):
         type=params['type'])
 
     pc = RTCPeerConnection()
-    pcs.append(pc)
+    pcs.add(pc)
 
     # Add local media
     pc.addTrack(local_video)
+
+    @pc.on('iceconnectionstatechange')
+    async def on_iceconnectionstatechange():
+        if pc.iceConnectionState == 'failed':
+            print('Remote peer removed!')
+            await pc.close()
+            pcs.discard(pc)
 
     await pc.setRemoteDescription(offer)
     answer = await pc.createAnswer()
