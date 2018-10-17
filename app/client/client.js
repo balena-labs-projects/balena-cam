@@ -7,7 +7,7 @@ pc.addEventListener('icegatheringstatechange', function() {
 
 pc.addEventListener('iceconnectionstatechange', function() {
   console.warn(pc.iceConnectionState);
-  if (pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === failed) {
+  if ((typeof pc.iceConnectionState !== 'undefined') && (pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'failed')) {
         document.getElementById('video-container').style.display = 'none';
         document.getElementById('fail-container').style.display = 'block';
   }
@@ -74,15 +74,10 @@ function negotiate() {
     });
 }
 
-function start() {
-    negotiate();
-}
-
 function stop() {
-    document.getElementById('stop').style.display = 'none';
     // close peer connection
     setTimeout(function() {
         pc.close();
     }, 500);
 }
-start()
+negotiate()
