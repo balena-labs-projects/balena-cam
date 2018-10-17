@@ -6,17 +6,24 @@ from aiortc.contrib.media import MediaPlayer
 
 ROOT = os.path.dirname(__file__)
 
-class LocalVideoStream(VideoStreamTrack):
+class CameraDevice():
     def __init__(self):
-        super().__init__()  # don't forget this!
         self.cap = cv2.VideoCapture(0)
         self.cap.set(3, 640)
         self.cap.set(4, 480)
+
+    def get_latest_frame(self):
+        ret, frame = self.cap.read()
+        return frame
+
+class LocalVideoStream(VideoStreamTrack):
+    def __init__(self, camera_device):
+        super().__init__()
+        self.camera_device = camera_device
         self.data_bgr = None
 
     async def recv(self):
-        ret, cv2_frame = self.cap.read()
-        self.data_bgr = cv2_frame
+        self.data_bgr = self.camera_device.get_latest_frame()
         pts, time_base = await self.next_timestamp()
         frame = VideoFrame.from_ndarray(self.data_bgr, format='bgr24')
         frame.pts = pts
@@ -39,8 +46,8 @@ async def balena_logo(request):
     content = open(os.path.join(ROOT, 'client/balena-logo.svg'), 'r').read()
     return web.Response(content_type='image/svg+xml', text=content)
 
-pcs = []
-local_video = LocalVideoStream()
+pcs = set()
+camera_device = CameraDevice()
 
 async def offer(request):
     params = await request.json()
@@ -49,10 +56,17 @@ async def offer(request):
         type=params['type'])
 
     pc = RTCPeerConnection()
-    pcs.append(pc)
+    pcs.add(pc)
 
     # Add local media
+    local_video = LocalVideoStream(camera_device)
     pc.addTrack(local_video)
+
+    @pc.on('iceconnectionstatechange')
+    async def on_iceconnectionstatechange():
+        if pc.iceConnectionState == 'failed':
+            await pc.close()
+            pcs.discard(pc)
 
     await pc.setRemoteDescription(offer)
     answer = await pc.createAnswer()
