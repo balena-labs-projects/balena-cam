@@ -7,7 +7,7 @@ pc.addEventListener('icegatheringstatechange', function() {
 
 pc.addEventListener('iceconnectionstatechange', function() {
   console.warn(pc.iceConnectionState);
-  if ((typeof pc.iceConnectionState !== 'undefined') && (pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'failed')) {
+  if ((typeof pc.iceConnectionState !== 'undefined') && (pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'failed' || pc.iceConnectionState === 'closed')) {
         document.getElementById('video-container').style.display = 'none';
         document.getElementById('fail-container').style.display = 'initial';
   }
