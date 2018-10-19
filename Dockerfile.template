@@ -1,4 +1,4 @@
-FROM resin/raspberrypi3-debian:stretch
+FROM resin/%%RESIN_MACHINE_NAME%%-debian:stretch
 
 # Install dependencies
 RUN apt-get update &&\
