@@ -8,8 +8,10 @@ pc.addEventListener('icegatheringstatechange', function() {
 pc.addEventListener('iceconnectionstatechange', function() {
   console.warn(pc.iceConnectionState);
   if ((typeof pc.iceConnectionState !== 'undefined') && (pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'failed' || pc.iceConnectionState === 'closed')) {
-        document.getElementById('video-container').style.display = 'none';
-        document.getElementById('fail-container').style.display = 'initial';
+    showContainer('fail');
+  }
+  if ((typeof pc.iceConnectionState !== 'undefined') && (pc.iceConnectionState === 'connected' || pc.iceConnectionState === 'completed')) {
+    showContainer('video');
   }
 }, false);
 
@@ -20,15 +22,25 @@ pc.addEventListener('signalingstatechange', function() {
 // connect audio / video
 pc.addEventListener('track', function(evt) {
     console.log('incoming track')
-    console.log(evt);
     if (evt.track.kind == 'video') {
-        document.getElementById('spinner-container').style.display = 'none';
         document.getElementById('video').srcObject = evt.streams[0];
-        console.log('video elem added');
-    } else {
-        document.getElementById('audio').srcObject = evt.streams[0];
+        console.log('Video element added.');
     }
 });
+
+function showContainer(kind){
+  if (kind === "video") {
+    document.getElementById('spinner-container').style.display = 'none';
+    document.getElementById('video-container').style.display = 'block';
+    document.getElementById('fail-container').style.display = 'none';
+  } else if (kind === "fail") {
+    document.getElementById('spinner-container').style.display = 'none';
+    document.getElementById('video-container').style.display = 'none';
+    document.getElementById('fail-container').style.display = 'initial';
+  } else {
+    console.error('No container that is kind of: ' + kind);
+  }
+}
 
 function negotiate() {
     pc.addTransceiver('video', {direction: 'recvonly'});
