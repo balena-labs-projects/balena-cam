@@ -7,8 +7,8 @@ Share your balena device's camera feed.
 - Sign up on [balena.io](https://balena.io/) and follow our [Getting Started Guide](https://balena.io/docs/learn/getting-started)
 - Clone this repository to your local workspace
 - Set these variables in the `Fleet Configuration` application side tab
-  - `BALENA_HOST_CONFIG_gpu_mem` = `196`
-  - `BALENA_HOST_CONFIG_start_x` = `1`
+  - `RESIN_HOST_CONFIG_gpu_mem` = `196`
+  - `RESIN_HOST_CONFIG_start_x` = `1`
 - Push code to your device with a simple `git push balena master`
 - See the magic happening, your device is getting updated Over-The-Air!
 - If you want your device to be accessible on WAN, enable its public URL
