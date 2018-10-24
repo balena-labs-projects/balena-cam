@@ -2,7 +2,6 @@ import asyncio, json, os, cv2
 from aiohttp import web
 from av import VideoFrame
 from aiortc import RTCPeerConnection, RTCSessionDescription, VideoStreamTrack
-from aiortc.contrib.media import MediaPlayer
 
 ROOT = os.path.dirname(__file__)
 
