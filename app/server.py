@@ -33,6 +33,10 @@ async def index(request):
     content = open(os.path.join(ROOT, 'client/index.html'), 'r').read()
     return web.Response(content_type='text/html', text=content)
 
+async def stylesheet(request):
+    content = open(os.path.join(ROOT, 'client/style.css'), 'r').read()
+    return web.Response(content_type='text/css', text=content)
+
 async def javascript(request):
     content = open(os.path.join(ROOT, 'client/client.js'), 'r').read()
     return web.Response(content_type='application/javascript', text=content)
@@ -90,5 +94,6 @@ if __name__ == '__main__':
     app.router.add_get('/balena-logo.svg', balena_logo)
     app.router.add_get('/balena-cam.svg', balena)
     app.router.add_get('/client.js', javascript)
+    app.router.add_get('/style.css', stylesheet)
     app.router.add_post('/offer', offer)
     web.run_app(app, port=3000)
