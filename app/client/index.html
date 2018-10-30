@@ -75,10 +75,21 @@
         box-shadow: 0em -2.6em 0em 0em rgba(5,3,5, 0.2), 1.8em -1.8em 0 0em rgba(5,3,5, 0.2), 2.5em 0em 0 0em rgba(5,3,5, 0.2), 1.75em 1.75em 0 0em rgba(5,3,5, 0.2), 0em 2.5em 0 0em rgba(5,3,5, 0.2), -1.8em 1.8em 0 0em rgba(5,3,5, 0.5), -2.6em 0em 0 0em rgba(5,3,5, 0.7), -1.8em -1.8em 0 0em #050305;
       }
     }
+    .footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      height: 4em;
+    }
+    @media (min-width: @screen-sm){
+      .footer {
+        position: relative;
+      }
+    }
   </style>
 </head>
 
-<body style="padding-top: 10%">
+<body style="padding-top: 10%; margin-bottom: 4em">
 
   <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
     <div class="container">
@@ -130,13 +141,15 @@
     </div>
   </div>
 
-  <nav class="navbar navbar-dark bg-dark fixed-bottom">
-    <div class="container align-items-center">
-      <p class="navbar-brand">is an open source project by
-        <a href="https://www.balena.io/" > <img style="width: 6rem; height: auto;" src="./balena-logo.svg"> </a>
-      </p>
-    </div>
-  </nav>
+  <footer class="footer">
+    <nav class="navbar navbar-dark bg-dark">
+      <div class="container align-items-center">
+        <p class="navbar-brand">is an open source project by
+          <a href="https://www.balena.io/" > <img style="width: 6rem; height: auto;" src="./balena-logo.svg"> </a>
+        </p>
+      </div>
+    </nav>
+  </footer>
 
   <script src="client.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
