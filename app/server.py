@@ -23,8 +23,8 @@ class LocalVideoStream(VideoStreamTrack):
 
     async def recv(self):
         self.data_bgr = self.camera_device.get_latest_frame()
-        pts, time_base = await self.next_timestamp()
         frame = VideoFrame.from_ndarray(self.data_bgr, format='bgr24')
+        pts, time_base = await self.next_timestamp()
         frame.pts = pts
         frame.time_base = time_base
         return frame
