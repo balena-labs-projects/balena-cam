@@ -21,6 +21,12 @@ Share your balena device's camera feed.
 - Make sure to update your devices after every change you make!
 - Commit your changes and do another `git push balena master`
 
+## Additional Information
+
+- This project uses [WebRTC](https://webrtc.org/) (a Real-Time Communication protocol).
+- A direct WebRTC connection fails in some cases.
+- This current version works on all the cases that a direct connection is possible.
+
 ## License
 
 Copyright 2018 Balena Ltd.
