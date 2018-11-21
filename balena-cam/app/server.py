@@ -3,8 +3,6 @@ from aiohttp import web
 from av import VideoFrame
 from aiortc import RTCPeerConnection, RTCSessionDescription, VideoStreamTrack
 
-ROOT = os.path.dirname(__file__)
-
 class CameraDevice():
     def __init__(self):
         self.cap = cv2.VideoCapture(0)
@@ -49,9 +47,6 @@ async def balena_logo(request):
     content = open(os.path.join(ROOT, 'client/balena-logo.svg'), 'r').read()
     return web.Response(content_type='image/svg+xml', text=content)
 
-pcs = set()
-camera_device = CameraDevice()
-
 async def offer(request):
     params = await request.json()
     offer = RTCSessionDescription(
@@ -88,6 +83,10 @@ async def on_shutdown(app):
     await asyncio.gather(*coros)
 
 if __name__ == '__main__':
+    ROOT = os.path.dirname(__file__)
+    pcs = set()
+    camera_device = CameraDevice()
+
     app = web.Application()
     app.on_shutdown.append(on_shutdown)
     app.router.add_get('/', index)
