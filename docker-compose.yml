@@ -4,5 +4,4 @@ services:
                 build: ./balena-cam
                 privileged: true
                 restart: always
-                ports:
-                        - "80:3000"
+                network_mode: "host"
