@@ -13,10 +13,10 @@ loaded_frame = np.load('frame.dat')
 
 c = "VideoFrame.from_ndarray(loaded_frame, format='bgr24')"
 
-# repeat the same 30 frame test 50 times
-rep = 50
+# repeat the same 30 frame test 900 times, which is the equivalent of 15 min of video
+rep = 900
 times = timeit.repeat(c, number=30, repeat=rep, globals=globals())
 
-print('Min: ', min(times))
-print('Max: ', max(times))
-print('Avg: ', sum(times)/rep)
+print('Min: ', min(times), ' second')
+print('Max: ', max(times), ' second')
+print('Avg: ', sum(times)/rep, ' second')
