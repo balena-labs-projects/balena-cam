@@ -9,8 +9,9 @@ class CameraDevice():
         self.cap.set(3, 640)
         self.cap.set(4, 480)
 
-    def get_latest_frame(self):
+    async def get_latest_frame(self):
         ret, frame = self.cap.read()
+        asyncio.sleep(0)
         return frame
 
 class LocalVideoStream(VideoStreamTrack):
@@ -21,7 +22,7 @@ class LocalVideoStream(VideoStreamTrack):
         self.data_bgr = None
 
     async def recv(self):
-        self.data_bgr = self.camera_device.get_latest_frame()
+        self.data_bgr = await self.camera_device.get_latest_frame()
         frame = VideoFrame.from_ndarray(self.data_bgr, format='bgr24')
         pts, time_base = await self.next_timestamp()
         print('-------------')
