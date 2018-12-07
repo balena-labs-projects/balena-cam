@@ -20,7 +20,6 @@ RUN cp ./config/sites-enabled/resin-cam /etc/nginx/sites-enabled/
 RUN printf "bcm2835-v4l2\n" >> /etc/modules
 RUN pip3 install --upgrade pip 
 RUN pip3 install av
-RUN pip3 install picamera[array]
 
 # Enable systemd
 ENV INITSYSTEM on

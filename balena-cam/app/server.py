@@ -11,7 +11,7 @@ class CameraDevice():
 
     async def get_latest_frame(self):
         ret, frame = self.cap.read()
-        asyncio.sleep(0)
+        await asyncio.sleep(0)
         return frame
 
 class LocalVideoStream(VideoStreamTrack):
@@ -58,7 +58,7 @@ async def offer(request):
     pcs.add(pc)
 
     # Add local media
-    local_video = LocalVideoStream(camera_device, peerId)
+    local_video = LocalVideoStream(camera_device)
     pc.addTrack(local_video)
 
     @pc.on('iceconnectionstatechange')
