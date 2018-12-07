@@ -14,15 +14,20 @@ class CameraDevice():
         return frame
 
 class LocalVideoStream(VideoStreamTrack):
-    def __init__(self, camera_device):
+    def __init__(self, camera_device, peer_id):
         super().__init__()
         self.camera_device = camera_device
+        self.peer_id = peer_id
         self.data_bgr = None
 
     async def recv(self):
         self.data_bgr = self.camera_device.get_latest_frame()
         frame = VideoFrame.from_ndarray(self.data_bgr, format='bgr24')
         pts, time_base = await self.next_timestamp()
+        print('-------------')
+        print(str(self.peer_id))
+        print('PTS: ', pts)
+        print('Timebase: ', time_base)
         frame.pts = pts
         frame.time_base = time_base
         return frame
@@ -48,6 +53,7 @@ async def balena_logo(request):
     return web.Response(content_type='image/svg+xml', text=content)
 
 async def offer(request):
+    global peerId
     params = await request.json()
     offer = RTCSessionDescription(
         sdp=params['sdp'],
@@ -55,9 +61,10 @@ async def offer(request):
 
     pc = RTCPeerConnection()
     pcs.add(pc)
+    peerId += 1
 
     # Add local media
-    local_video = LocalVideoStream(camera_device)
+    local_video = LocalVideoStream(camera_device, peerId)
     pc.addTrack(local_video)
 
     @pc.on('iceconnectionstatechange')
@@ -86,6 +93,7 @@ if __name__ == '__main__':
     ROOT = os.path.dirname(__file__)
     pcs = set()
     camera_device = CameraDevice()
+    peerId = 0
 
     app = web.Application()
     app.on_shutdown.append(on_shutdown)
