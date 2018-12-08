@@ -1,8 +1,7 @@
 import sys, timeit
 import numpy as np
 from av import VideoFrame
-sys.path.append('..')
-from server import CameraDevice
+from FrameCapture_test import CameraDevice
 
 print('+++++++ VideoFrame Generation Testing +++++++')
 
