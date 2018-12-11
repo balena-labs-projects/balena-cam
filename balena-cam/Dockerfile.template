@@ -1,4 +1,4 @@
-FROM resin/rpi-raspbian
+FROM resin/%%RESIN_MACHINE_NAME%%-debian:buster
 
 # Install dependencies
 RUN apt-get update &&\
