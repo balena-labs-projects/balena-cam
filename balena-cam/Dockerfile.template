@@ -3,8 +3,11 @@ FROM resin/%%RESIN_MACHINE_NAME%%-debian:buster
 # Install dependencies
 RUN apt-get update &&\
   apt-get install -yq \
-    gcc nginx pulseaudio v4l-utils libopus-dev libvpx-dev pkg-config golang-go \
-    gstreamer-1.0 libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev gstreamer1.0-plugins-good \
+    git gcc nginx pulseaudio v4l-utils pkg-config golang-go \
+    libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev gstreamer1.0-plugins-base \
+    gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav \ 
+    gstreamer1.0-doc gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa \ 
+    gstreamer1.0-gl gstreamer1.0-pulseaudio \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/app
@@ -16,7 +19,13 @@ RUN cp ./config/sites-enabled/resin-cam /etc/nginx/sites-enabled/
 # Enable the v4l2 driver for the Raspberry Pi camera
 RUN printf "bcm2835-v4l2\n" >> /etc/modules
 
+ENV GOPATH /root/go
+
+RUN mkdir -p $HOME/go/src/github.com/balena-io-playground/
+RUN ln -s /usr/src/app $HOME/go/src/github.com/balena-io-playground/balena-cam
+RUN cd $HOME/go/src/github.com/balena-io-playground/balena-cam && go get -v
+
 # Enable systemd
 ENV INITSYSTEM on
 
-CMD ["/bin/bash", "/usr/src/app/start.sh"]
+CMD /root/go/bin/balena-cam
