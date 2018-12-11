@@ -1,17 +1,18 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"net/http"
+
 	"github.com/pions/webrtc"
 	"github.com/pions/webrtc/examples/util"
-	"github.com/pions/webrtc/examples/util/gstreamer-src"
+	gst "github.com/pions/webrtc/examples/util/gstreamer-src"
 	"github.com/pions/webrtc/pkg/ice"
 )
 
-func handleOffer(w http.ResponseWriter, r *http.Request){
+func handleOffer(w http.ResponseWriter, r *http.Request) {
 	// extract offerer's sdp from json data
 	var offer webrtc.RTCSessionDescription
 	body, err := ioutil.ReadAll(r.Body)
@@ -20,8 +21,8 @@ func handleOffer(w http.ResponseWriter, r *http.Request){
 	util.Check(err)
 	// WebRTC
 	webrtc.RegisterDefaultCodecs()
-	config := webrtc.RTCConfiguration {
-		IceServers: []webrtc.RTCIceServer {
+	config := webrtc.RTCConfiguration{
+		IceServers: []webrtc.RTCIceServer{
 			{
 				URLs: []string{"stun:stun.l.google.com:19302"},
 			},
@@ -53,7 +54,7 @@ func handleOffer(w http.ResponseWriter, r *http.Request){
 	w.Write(answerJson)
 }
 
-func main(){
+func main() {
 	// Web Server
 	dir := http.FileServer(http.Dir("client"))
 	http.Handle("/", dir)
@@ -62,4 +63,3 @@ func main(){
 	fmt.Println("http://localhost:3000")
 	http.ListenAndServe(":3000", nil)
 }
-
