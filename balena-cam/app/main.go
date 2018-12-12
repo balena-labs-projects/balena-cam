@@ -8,7 +8,6 @@ import (
 
 	"github.com/pions/webrtc"
 	"github.com/pions/webrtc/examples/util"
-	gst "github.com/pions/webrtc/examples/util/gstreamer-src"
 	"github.com/pions/webrtc/pkg/ice"
 )
 
@@ -38,6 +37,7 @@ func handleOffer(w http.ResponseWriter, r *http.Request) {
 	util.Check(err)
 	_, err = peerConnection.AddTrack(vp8Track)
 	util.Check(err)
+	CreatePipeline(webrtc.VP8, vp8Track.Samples).Start()
 	// Set offer
 	err = peerConnection.SetRemoteDescription(offer)
 	util.Check(err)
@@ -46,8 +46,6 @@ func handleOffer(w http.ResponseWriter, r *http.Request) {
 	// Make and Send answer back to the client
 	answerJson, err := json.Marshal(answer)
 	util.Check(err)
-	gst.CreatePipeline(webrtc.VP8, vp8Track.Samples).Start()
-
 	// Response
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
@@ -55,8 +53,7 @@ func handleOffer(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	// Web Server
-	dir := http.FileServer(http.Dir("client"))
+	dir := http.FileServer(http.Dir("./client"))
 	http.Handle("/", dir)
 	http.HandleFunc("/offer", handleOffer)
 	fmt.Println("Server running...")

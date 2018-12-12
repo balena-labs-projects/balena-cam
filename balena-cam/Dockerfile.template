@@ -12,14 +12,12 @@ RUN apt-get update &&\
 
 WORKDIR /usr/src/app
 
-COPY ./app/ /usr/src/app/
+COPY ./app/ /usr/src/app
 RUN rm /etc/nginx/sites-enabled/*
 RUN cp ./config/sites-enabled/resin-cam /etc/nginx/sites-enabled/
 
 # Enable the v4l2 driver for the Raspberry Pi camera
 RUN printf "bcm2835-v4l2\n" >> /etc/modules
-
-ENV GOPATH /root/go
 
 RUN mkdir -p $HOME/go/src/github.com/balena-io-playground/
 RUN ln -s /usr/src/app $HOME/go/src/github.com/balena-io-playground/balena-cam
