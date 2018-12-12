@@ -33,11 +33,10 @@ func handleOffer(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("Connection State has changed %s \n", connectionState.String())
 	})
 	// Create Video Track
-	vp8Track, err := peerConnection.NewRTCSampleTrack(webrtc.DefaultPayloadTypeVP8, "video", "pion2")
+	videoTrack, err := peerConnection.NewRTCSampleTrack(webrtc.DefaultPayloadTypeVP8, "video", "feed")
 	util.Check(err)
-	_, err = peerConnection.AddTrack(vp8Track)
+	_, err = peerConnection.AddTrack(videoTrack)
 	util.Check(err)
-	CreatePipeline(webrtc.VP8, vp8Track.Samples).Start()
 	// Set offer
 	err = peerConnection.SetRemoteDescription(offer)
 	util.Check(err)
@@ -50,6 +49,7 @@ func handleOffer(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(answerJson)
+	CreatePipeline(webrtc.VP8, videoTrack.Samples).Start()
 }
 
 func main() {
