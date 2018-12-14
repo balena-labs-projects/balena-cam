@@ -102,11 +102,24 @@ function requestFullscreen(element) {
   (element.requestFullScreen && element.requestFullScreen()));
 }
 
-function fullscreen(){
+function fullscreen() {
   var video = document.getElementById('video');
   if (supportsFullscreen()) {
     requestFullscreen(video);
   }
 }
 
-negotiate()
+function checkVideoFreeze() {
+  setInterval(function() {
+    if (peerConnectionGood() && previousPlaybackTime === video.currentTime && video.currentTime !== 0) {
+      console.warn("Video freeze detected!!!");
+      pc.close();
+      location.reload();
+    } else {
+      previousPlaybackTime = video.currentTime;
+    }
+  }, 3000);
+}
+
+negotiate();
+checkVideoFreeze();
