@@ -1,5 +1,9 @@
 var pc = new RTCPeerConnection({sdpSemantics: 'unified-plan'});
 
+window.onbeforeunload = function() {
+  pc.close();
+};
+
 pc.addEventListener('icegatheringstatechange', function() {
   console.warn(pc.iceGatheringState);
 }, false);
