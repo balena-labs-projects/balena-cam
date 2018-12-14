@@ -110,6 +110,7 @@ function fullscreen() {
 }
 
 function checkVideoFreeze() {
+  var previousPlaybackTime;
   setInterval(function() {
     if (peerConnectionGood() && previousPlaybackTime === video.currentTime && video.currentTime !== 0) {
       console.warn("Video freeze detected!!!");
@@ -121,5 +122,36 @@ function checkVideoFreeze() {
   }, 3000);
 }
 
+function getCurrentFrame() {
+    var canvas = document.createElement("canvas");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    var canvasContext = canvas.getContext("2d");
+    canvasContext.drawImage(video, 0, 0);
+    return canvas.toDataURL('image/png');
+}
+
+function isVideoFrozen() {
+  var previousFrame;
+  var ignoreFirst = true;
+  setInterval(function() {
+    if (peerConnectionGood() && video.currentTime > 0 && getCurrentFrame() === previousFrame) {
+      if (ignoreFirst) {
+        ignoreFirst = false;
+        return
+      }
+      console.warn("Video freeze detected using frames!!!");
+      pc.close();
+      location.reload();
+    } else {
+      previousFrame = getCurrentFrame();
+    }
+  }, 3000);
+}
+
 negotiate();
-checkVideoFreeze();
+if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+  isVideoFrozen();
+} else {
+  checkVideoFreeze();
+}
