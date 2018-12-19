@@ -3,16 +3,15 @@ from aiohttp import web
 from av import VideoFrame
 from aiortc import RTCPeerConnection, RTCSessionDescription, VideoStreamTrack
 
-ROOT = os.path.dirname(__file__)
-
 class CameraDevice():
     def __init__(self):
         self.cap = cv2.VideoCapture(0)
         self.cap.set(3, 640)
         self.cap.set(4, 480)
 
-    def get_latest_frame(self):
+    async def get_latest_frame(self):
         ret, frame = self.cap.read()
+        await asyncio.sleep(0)
         return frame
 
 class LocalVideoStream(VideoStreamTrack):
@@ -22,7 +21,7 @@ class LocalVideoStream(VideoStreamTrack):
         self.data_bgr = None
 
     async def recv(self):
-        self.data_bgr = self.camera_device.get_latest_frame()
+        self.data_bgr = await self.camera_device.get_latest_frame()
         frame = VideoFrame.from_ndarray(self.data_bgr, format='bgr24')
         pts, time_base = await self.next_timestamp()
         frame.pts = pts
@@ -48,9 +47,6 @@ async def balena(request):
 async def balena_logo(request):
     content = open(os.path.join(ROOT, 'client/balena-logo.svg'), 'r').read()
     return web.Response(content_type='image/svg+xml', text=content)
-
-pcs = set()
-camera_device = CameraDevice()
 
 async def offer(request):
     params = await request.json()
@@ -88,6 +84,10 @@ async def on_shutdown(app):
     await asyncio.gather(*coros)
 
 if __name__ == '__main__':
+    ROOT = os.path.dirname(__file__)
+    pcs = set()
+    camera_device = CameraDevice()
+
     app = web.Application()
     app.on_shutdown.append(on_shutdown)
     app.router.add_get('/', index)

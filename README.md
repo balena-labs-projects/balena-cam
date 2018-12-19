@@ -27,6 +27,11 @@ Share your balena device's camera feed.
 - A direct WebRTC connection fails in some cases.
 - This current version works on all the cases that a direct connection is possible.
 
+## Supported Browsers
+
+- Chrome 
+- Firefox
+
 ## License
 
 Copyright 2018 Balena Ltd.
