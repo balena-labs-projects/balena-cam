@@ -1,41 +1,48 @@
-var pc = new RTCPeerConnection({sdpSemantics: 'unified-plan'});
-
 window.onbeforeunload = function() {
-  pc.close();
+  if (primaryPeerConnection !== null) {
+    primaryPeerConnection.close();
+  }
+  if (backupPeerConnection !== null) {
+    backupPeerConnection.close();
+  }
 };
 
-pc.addEventListener('icegatheringstatechange', function() {
-  console.warn(pc.iceGatheringState);
-}, false);
+var primaryPeerConnection = null;
+var backupPeerConnection = null;
 
-pc.addEventListener('iceconnectionstatechange', function() {
-  console.warn(pc.iceConnectionState);
-  if  (peerConnectionBad()){
-    showContainer('fail');
-  }
-  if (peerConnectionGood()) {
-    showContainer('video');
-  }
-}, false);
+function createPeerConnection () {
+  return new Promise(function (resolve, reject) {
+    var pc = new RTCPeerConnection({sdpSemantics: 'unified-plan'});
+    var isVideoAttached = false;
 
-pc.addEventListener('signalingstatechange', function() {
-  console.warn(pc.signalingState);
-}, false);
-
-pc.addEventListener('track', function(evt) {
-  console.log('incoming track')
-  if (evt.track.kind == 'video') {
-    document.getElementById('video').srcObject = evt.streams[0];
-    console.log('Video element added.');
-  }
-});
-
-function peerConnectionGood() {
-  return ((typeof pc.iceConnectionState !== 'undefined') && (pc.iceConnectionState === 'connected' || pc.iceConnectionState === 'completed'));
+    pc.addEventListener('iceconnectionstatechange', function() {
+      console.warn(pc.iceConnectionState);
+      if  (peerConnectionBad(pc)){
+        showContainer('fail');
+      }
+      if (peerConnectionGood(pc)) {
+        if (!isVideoAttached) {
+          isVideoAttached = true;
+          attachStreamToVideoElement(pc, document.getElementById('video'));
+        }
+        showContainer('video');
+      }
+    }, false);
+    resolve(pc);
+  });
 }
 
-function peerConnectionBad() {
-  return ((typeof pc.iceConnectionState !== 'undefined') && (pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'failed' || pc.iceConnectionState === 'closed'));
+function attachStreamToVideoElement(pc, videoElem){
+  console.log('Attaching stream...');
+  videoElem.srcObject = pc.getRemoteStreams()[0];
+}
+
+function peerConnectionGood(pc) {
+  return ((pc.iceConnectionState === 'connected' || pc.iceConnectionState === 'completed'));
+}
+
+function peerConnectionBad(pc) {
+  return ((pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'failed' || pc.iceConnectionState === 'closed'));
 }
 
 function showContainer(kind){
@@ -52,7 +59,7 @@ function showContainer(kind){
   }
 }
 
-function negotiate() {
+function negotiate(pc) {
   pc.addTransceiver('video', {direction: 'recvonly'});
   return pc.createOffer().then(function(offer) {
     return pc.setLocalDescription(offer);
@@ -113,19 +120,7 @@ function fullscreen() {
   }
 }
 
-function checkVideoFreeze() {
-  var previousPlaybackTime;
-  setInterval(function() {
-    if (peerConnectionGood() && previousPlaybackTime === video.currentTime && video.currentTime !== 0) {
-      console.warn("Video freeze detected!!!");
-      pc.close();
-      location.reload();
-    } else {
-      previousPlaybackTime = video.currentTime;
-    }
-  }, 3000);
-}
-
+// Use on firefox
 function getCurrentFrame() {
     var canvas = document.createElement("canvas");
     canvas.width = video.videoWidth;
@@ -135,16 +130,17 @@ function getCurrentFrame() {
     return canvas.toDataURL('image/png');
 }
 
-function isVideoFrozen() {
+function isVideoFrozen(pc) {
   var previousFrame;
   var ignoreFirst = true;
-  setInterval(function() {
-    if (peerConnectionGood() && video.currentTime > 0 && getCurrentFrame() === previousFrame) {
+  var intervalId = setInterval(function() {
+    if (peerConnectionGood(pc) && video.currentTime > 0 && getCurrentFrame() === previousFrame) {
       if (ignoreFirst) {
         ignoreFirst = false;
         return
       }
       console.warn("Video freeze detected using frames!!!");
+      // Make pc in the backgroud, attach stream to video elem
       pc.close();
       location.reload();
     } else {
@@ -153,9 +149,34 @@ function isVideoFrozen() {
   }, 3000);
 }
 
-negotiate();
-if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-  isVideoFrozen();
-} else {
-  checkVideoFreeze();
+// Use on Chrome
+function checkVideoFreeze(pc) {
+  var previousPlaybackTime;
+  var intervalId = setInterval(function() {
+    if (peerConnectionGood(pc) && previousPlaybackTime === video.currentTime && video.currentTime !== 0) {
+      console.warn("Video freeze detected!!!");
+      // Stop this interval, start backup peerConnection
+      clearInterval(intervalId);
+
+      pc.close();
+      //location.reload();
+    } else {
+      previousPlaybackTime = video.currentTime;
+    }
+  }, 3000);
 }
+
+function detectVideoFreeze(pc) {
+  if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+    isVideoFrozen(pc);
+  } else {
+    checkVideoFreeze(pc);
+  }
+}
+
+primaryPeerConnection = createPeerConnection().then(function (pc){
+  negotiate(pc);
+  //detectVideoFreeze(pc);
+  return pc
+});
+
