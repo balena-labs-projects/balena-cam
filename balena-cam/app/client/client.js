@@ -1,6 +1,7 @@
 var primaryPeerConnection = null;
 var backupPeerConnection = null;
 var vfdIntervalId = null;
+var state = 0;
 
 window.onbeforeunload = function() {
   if (primaryPeerConnection !== null) {
@@ -39,7 +40,7 @@ function createNewPeerConnection() {
   var pc = new RTCPeerConnection({sdpSemantics: 'unified-plan'});
   var isVideoAttached = false;
   new Promise(function (resolve, reject) {
-    pc.addEventListener('iceconnectionstatechange', function() {
+    function mainIceListener() {
       console.warn(pc.iceConnectionState);
       if  (peerConnectionBad(pc)){
         showContainer('fail');
@@ -48,10 +49,13 @@ function createNewPeerConnection() {
         if (!isVideoAttached) {
           isVideoAttached = true;
           attachStreamToVideoElement(pc, document.getElementById('video'));
+          cleanup();
+          startVideoFreezeDetection(pc);
         }
         showContainer('video');
       }
-    }, false);
+    }
+    pc.addEventListener('iceconnectionstatechange', mainIceListener);
     resolve();
   }).then(function () {
     pc.addTransceiver('video', {direction: 'recvonly'});
@@ -136,6 +140,7 @@ function isVideoFrozen(pc) {
         return
       }
       console.warn("Video freeze detected using frames!!!");
+      reconnect();
     } else {
       previousFrame = getCurrentFrame();
     }
@@ -148,6 +153,7 @@ function checkVideoFreeze(pc) {
   vfdIntervalId = setInterval(function() {
     if (peerConnectionGood(pc) && previousPlaybackTime === video.currentTime && video.currentTime !== 0) {
       console.warn("Video freeze detected!!!");
+      reconnect();
     } else {
       previousPlaybackTime = video.currentTime;
     }
@@ -155,6 +161,7 @@ function checkVideoFreeze(pc) {
 }
 
 function startVideoFreezeDetection(pc) {
+  stopVideoFreezeDetection();
   if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
     isVideoFrozen(pc);
   } else {
@@ -163,7 +170,27 @@ function startVideoFreezeDetection(pc) {
 }
 
 function stopVideoFreezeDetection() {
-  clearInterval(vfdIntervalId);
+  if (vfdIntervalId !== null) {
+    console.log('Stopping Current Video Freeze Detector');
+    clearInterval(vfdIntervalId);
+  }
+}
+
+function cleanup() {
+  if (backupPeerConnection !== null) {
+    console.log('Cleaning Up...')
+    var tmp = primaryPeerConnection;
+    primaryPeerConnection = backupPeerConnection;
+    backupPeerConnection = tmp;
+    backupPeerConnection.close();
+    backupPeerConnection = null;
+    showContainer('video');
+  }
+}
+
+function reconnect() {
+  console.log('Reconnecting');
+  backupPeerConnection = createNewPeerConnection();
 }
 
 primaryPeerConnection = createNewPeerConnection();
