@@ -1,36 +1,12 @@
+var primaryPeerConnection = null;
+var backupPeerConnection = null;
+var vfdIntervalId = null;
+
 window.onbeforeunload = function() {
   if (primaryPeerConnection !== null) {
     primaryPeerConnection.close();
   }
-  if (backupPeerConnection !== null) {
-    backupPeerConnection.close();
-  }
 };
-
-var primaryPeerConnection = null;
-var backupPeerConnection = null;
-
-function createPeerConnection () {
-  return new Promise(function (resolve, reject) {
-    var pc = new RTCPeerConnection({sdpSemantics: 'unified-plan'});
-    var isVideoAttached = false;
-
-    pc.addEventListener('iceconnectionstatechange', function() {
-      console.warn(pc.iceConnectionState);
-      if  (peerConnectionBad(pc)){
-        showContainer('fail');
-      }
-      if (peerConnectionGood(pc)) {
-        if (!isVideoAttached) {
-          isVideoAttached = true;
-          attachStreamToVideoElement(pc, document.getElementById('video'));
-        }
-        showContainer('video');
-      }
-    }, false);
-    resolve(pc);
-  });
-}
 
 function attachStreamToVideoElement(pc, videoElem){
   console.log('Attaching stream...');
@@ -59,9 +35,28 @@ function showContainer(kind){
   }
 }
 
-function negotiate(pc) {
-  pc.addTransceiver('video', {direction: 'recvonly'});
-  return pc.createOffer().then(function(offer) {
+function createNewPeerConnection() {
+  var pc = new RTCPeerConnection({sdpSemantics: 'unified-plan'});
+  var isVideoAttached = false;
+  new Promise(function (resolve, reject) {
+    pc.addEventListener('iceconnectionstatechange', function() {
+      console.warn(pc.iceConnectionState);
+      if  (peerConnectionBad(pc)){
+        showContainer('fail');
+      }
+      if (peerConnectionGood(pc)) {
+        if (!isVideoAttached) {
+          isVideoAttached = true;
+          attachStreamToVideoElement(pc, document.getElementById('video'));
+        }
+        showContainer('video');
+      }
+    }, false);
+    resolve();
+  }).then(function () {
+    pc.addTransceiver('video', {direction: 'recvonly'});
+    return pc.createOffer()
+  }).then(function(offer) {
     return pc.setLocalDescription(offer);
   }).then(function() {
     // wait for ICE gathering to complete
@@ -101,6 +96,7 @@ function negotiate(pc) {
   }).catch(function(e){
     console.error(e);
   });
+  return pc
 }
 
 function supportsFullscreen() {
@@ -133,16 +129,13 @@ function getCurrentFrame() {
 function isVideoFrozen(pc) {
   var previousFrame;
   var ignoreFirst = true;
-  var intervalId = setInterval(function() {
+  vfdIntervalId = setInterval(function() {
     if (peerConnectionGood(pc) && video.currentTime > 0 && getCurrentFrame() === previousFrame) {
       if (ignoreFirst) {
         ignoreFirst = false;
         return
       }
       console.warn("Video freeze detected using frames!!!");
-      // Make pc in the backgroud, attach stream to video elem
-      pc.close();
-      location.reload();
     } else {
       previousFrame = getCurrentFrame();
     }
@@ -152,21 +145,16 @@ function isVideoFrozen(pc) {
 // Use on Chrome
 function checkVideoFreeze(pc) {
   var previousPlaybackTime;
-  var intervalId = setInterval(function() {
+  vfdIntervalId = setInterval(function() {
     if (peerConnectionGood(pc) && previousPlaybackTime === video.currentTime && video.currentTime !== 0) {
       console.warn("Video freeze detected!!!");
-      // Stop this interval, start backup peerConnection
-      clearInterval(intervalId);
-
-      pc.close();
-      //location.reload();
     } else {
       previousPlaybackTime = video.currentTime;
     }
   }, 3000);
 }
 
-function detectVideoFreeze(pc) {
+function startVideoFreezeDetection(pc) {
   if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
     isVideoFrozen(pc);
   } else {
@@ -174,9 +162,8 @@ function detectVideoFreeze(pc) {
   }
 }
 
-primaryPeerConnection = createPeerConnection().then(function (pc){
-  negotiate(pc);
-  //detectVideoFreeze(pc);
-  return pc
-});
+function stopVideoFreezeDetection() {
+  clearInterval(vfdIntervalId);
+}
 
+primaryPeerConnection = createNewPeerConnection();
