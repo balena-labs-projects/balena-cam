@@ -13,7 +13,7 @@ class CameraDevice():
         ret, frame = self.cap.read()
         return frame
 
-class LocalVideoStream(VideoStreamTrack):
+class RTCVideoStream(VideoStreamTrack):
     def __init__(self, camera_device):
         super().__init__()
         self.camera_device = camera_device
@@ -57,7 +57,7 @@ async def offer(request):
     pcs.add(pc)
 
     # Add local media
-    local_video = LocalVideoStream(camera_device)
+    local_video = RTCVideoStream(camera_device)
     pc.addTrack(local_video)
 
     @pc.on('iceconnectionstatechange')
