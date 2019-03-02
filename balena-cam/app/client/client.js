@@ -184,7 +184,12 @@ function cleanup() {
     backupPeerConnection = tmp;
     backupPeerConnection.close();
     backupPeerConnection = null;
-    showContainer('video');
+    var thisInterval = setInterval(function (){
+      if (peerConnectionGood(primaryPeerConnection) && backupPeerConnection === null) {
+        showContainer('video');
+        clearInterval(thisInterval);
+      }
+    }, 100);
   }
 }
 
@@ -193,4 +198,4 @@ function reconnect() {
   backupPeerConnection = createNewPeerConnection();
 }
 
-primaryPeerConnection = createNewPeerConnection();
+primaryPeerConnection = createNewPeerConnection() ;
