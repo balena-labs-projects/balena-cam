@@ -80,6 +80,10 @@ body {
   display: none;
 }
 
+#mjpeg-container {
+  display: none;
+}
+
 .footer {
   position: absolute;
   bottom: 0;

@@ -27,10 +27,17 @@ function showContainer(kind){
     document.getElementById('spinner-container').style.display = 'none';
     document.getElementById('video-container').style.display = 'block';
     document.getElementById('fail-container').style.display = 'none';
+    document.getElementById('mjpeg-container').style.display = 'none';
   } else if (kind === 'fail') {
     document.getElementById('spinner-container').style.display = 'none';
     document.getElementById('video-container').style.display = 'none';
     document.getElementById('fail-container').style.display = 'initial';
+    document.getElementById('mjpeg-container').style.display = 'none';
+  } else if (kind === 'mjpeg') {
+    document.getElementById('spinner-container').style.display = 'none';
+    document.getElementById('video-container').style.display = 'none';
+    document.getElementById('fail-container').style.display = 'none';
+    document.getElementById('mjpeg-container').style.display = 'block';
   } else {
     console.error('No container that is kind of: ' + kind);
   }
@@ -198,4 +205,13 @@ function reconnect() {
   backupPeerConnection = createNewPeerConnection();
 }
 
-primaryPeerConnection = createNewPeerConnection() ;
+function startMJPEG() {
+  var mjpeg = new Image();
+  mjpeg.className = 'img-fluid';
+  mjpeg.src = '/mjpeg';
+  document.getElementById('mjpeg').appendChild(mjpeg);
+  showContainer('mjpeg')
+}
+
+primaryPeerConnection = createNewPeerConnection();
+

@@ -21,6 +21,13 @@ class CameraDevice():
         ret, frame = self.cap.read()
         return self.rotate(frame)
 
+    def get_jpeg_frame(self):
+        encode_param = (int(cv2.IMWRITE_JPEG_QUALITY), 90)
+        frame = self.get_latest_frame()
+        frame, encimg = cv2.imencode('.jpg', frame, encode_param)
+        return encimg.tostring()
+
+
 class RTCVideoStream(VideoStreamTrack):
     def __init__(self, camera_device):
         super().__init__()
@@ -34,7 +41,6 @@ class RTCVideoStream(VideoStreamTrack):
         frame.pts = pts
         frame.time_base = time_base
         return frame
-
 
 async def index(request):
     content = open(os.path.join(ROOT, 'client/index.html'), 'r').read()
@@ -61,30 +67,48 @@ async def offer(request):
     offer = RTCSessionDescription(
         sdp=params['sdp'],
         type=params['type'])
-
     pc = RTCPeerConnection()
     pcs.add(pc)
-
     # Add local media
     local_video = RTCVideoStream(camera_device)
     pc.addTrack(local_video)
-
     @pc.on('iceconnectionstatechange')
     async def on_iceconnectionstatechange():
         if pc.iceConnectionState == 'failed':
             await pc.close()
             pcs.discard(pc)
-
     await pc.setRemoteDescription(offer)
     answer = await pc.createAnswer()
     await pc.setLocalDescription(answer)
-
     return web.Response(
         content_type='application/json',
         text=json.dumps({
             'sdp': pc.localDescription.sdp,
             'type': pc.localDescription.type
         }))
+
+async def mjpeg_handler(request):
+    boundary = "frame"
+    response = web.StreamResponse(status=200, reason='OK', headers={
+        'Content-Type': 'multipart/x-mixed-replace; '
+                        'boundary=--%s' % boundary,
+    })
+    try:
+        await response.prepare(request)
+        while True:
+            data = await asyncio.get_event_loop().run_in_executor(None, camera_device.get_jpeg_frame)
+            await asyncio.sleep(0.2) # this means that the maximum FPS is 5
+            await response.write(
+                '--{}\r\n'.format(boundary).encode('utf-8'))
+            await response.write(b'Content-Type: image/jpeg\r\n')
+            await response.write('Content-Length: {}\r\n'.format(
+                    len(data)).encode('utf-8'))
+            await response.write(b"\r\n")
+            await response.write(data)
+            await response.write(b"\r\n")
+    except:
+        pass
+    return response
 
 async def on_shutdown(app):
     # close peer connections
@@ -96,11 +120,12 @@ if __name__ == '__main__':
     pcs = set()
     camera_device = CameraDevice()
 
+    flip = False
     try:
         if os.environ['rotation'] == '1':
             flip = True
     except:
-        flip = False
+        pass
 
     app = web.Application()
     app.on_shutdown.append(on_shutdown)
@@ -110,4 +135,5 @@ if __name__ == '__main__':
     app.router.add_get('/client.js', javascript)
     app.router.add_get('/style.css', stylesheet)
     app.router.add_post('/offer', offer)
+    app.router.add_get('/mjpeg', mjpeg_handler)
     web.run_app(app, port=3000)
