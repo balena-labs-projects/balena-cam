@@ -11,7 +11,7 @@ class CameraDevice():
 
     def get_latest_frame(self):
         ret, frame = self.cap.read()
-        return frame
+        return rotate(frame)
 
 class RTCVideoStream(VideoStreamTrack):
     def __init__(self, camera_device):
@@ -26,6 +26,14 @@ class RTCVideoStream(VideoStreamTrack):
         frame.pts = pts
         frame.time_base = time_base
         return frame
+
+def rotate(frame):
+    if flip:
+        (h, w) = frame.shape[:2]
+        center = (w/2, h/2)
+        M = cv2.getRotationMatrix2D(center, 180, 1.0)
+        frame = cv2.warpAffine(frame, M, (w, h))
+    return frame
 
 async def index(request):
     content = open(os.path.join(ROOT, 'client/index.html'), 'r').read()
@@ -86,6 +94,12 @@ if __name__ == '__main__':
     ROOT = os.path.dirname(__file__)
     pcs = set()
     camera_device = CameraDevice()
+
+    try:
+        if os.environ['rotation'] == '1':
+            flip = True
+    except:
+        flip = False
 
     app = web.Application()
     app.on_shutdown.append(on_shutdown)
