@@ -9,9 +9,17 @@ class CameraDevice():
         self.cap.set(3, 640)
         self.cap.set(4, 480)
 
+    def rotate(self, frame):
+        if flip:
+            (h, w) = frame.shape[:2]
+            center = (w/2, h/2)
+            M = cv2.getRotationMatrix2D(center, 180, 1.0)
+            frame = cv2.warpAffine(frame, M, (w, h))
+        return frame
+
     def get_latest_frame(self):
         ret, frame = self.cap.read()
-        return rotate(frame)
+        return self.rotate(frame)
 
 class RTCVideoStream(VideoStreamTrack):
     def __init__(self, camera_device):
@@ -27,13 +35,6 @@ class RTCVideoStream(VideoStreamTrack):
         frame.time_base = time_base
         return frame
 
-def rotate(frame):
-    if flip:
-        (h, w) = frame.shape[:2]
-        center = (w/2, h/2)
-        M = cv2.getRotationMatrix2D(center, 180, 1.0)
-        frame = cv2.warpAffine(frame, M, (w, h))
-    return frame
 
 async def index(request):
     content = open(os.path.join(ROOT, 'client/index.html'), 'r').read()
