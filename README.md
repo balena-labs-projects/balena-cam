@@ -1,27 +1,23 @@
 # balena-cam
 
-Share your balena device's camera feed.
+Live stream your balena device's camera feed.
 
 ## Getting started
 
-- Sign up on [balena.io](https://balena.io/) and follow our [Getting Started Guide](https://balena.io/docs/learn/getting-started)
-- Clone this repository to your local workspace
+- Sign up on [balena.io](https://balena.io/) and follow our [Getting Started Guide](https://balena.io/docs/learn/getting-started).
+- Clone this repository to your local workspace.
 - Set these variables in the `Fleet Configuration` application side tab
   - `RESIN_HOST_CONFIG_gpu_mem` = `196`
   - `RESIN_HOST_CONFIG_start_x` = `1`
-- If your device's camera module is mounted upside down you can 180 degrees rotate the streamed video using the following variable ([docs](https://www.balena.io/docs/learn/manage/serv-vars/)):
-  - `rotation` = `1`
-- Push code to your device with a simple `git push balena master`
-- See the magic happening, your device is getting updated Over-The-Air!
-- If you want your device to be accessible on WAN, enable its public URL
-  - Select your device from the `Devices` side tab
-  - Click the `Actions` side tab
-  - Click the `ENABLE PUBLIC DEVICE URL` button
-  - Note down your device's public URL!
-- When your device finishes updating visit your device's public URL to watch your stream!
-- You can find your device's IP on the Balena dashboard.
-- Make sure to update your devices after every change you make!
-- Commit your changes and do another `git push balena master`
+
+- Using [Balena CLI](https://www.balena.io/docs/reference/cli/), push the code with `balena push <application-name>`.
+- See the magic happening, your device is getting updated 🌟Over-The-Air🌟!
+
+### Extra
+
+- To rotate the camera feed by 180 degrees, add a **device variable**: `rotation` = `1` (More information about this on the [docs](https://www.balena.io/docs/learn/manage/serv-vars/)).
+- If you want your device to be accessible over the internet, toggle the switch called `PUBLIC DEVICE URL`.
+- Once your device finishes updating, you can watch the live feed by visiting your device's public URL.
 
 ## Additional Information
 
@@ -31,7 +27,7 @@ Share your balena device's camera feed.
 
 ## Supported Browsers
 
-- Chrome 
+- Chrome
 - Firefox
 
 ## License
