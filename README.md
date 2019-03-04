@@ -9,6 +9,8 @@ Share your balena device's camera feed.
 - Set these variables in the `Fleet Configuration` application side tab
   - `RESIN_HOST_CONFIG_gpu_mem` = `196`
   - `RESIN_HOST_CONFIG_start_x` = `1`
+- If your device's camera module is mounted upside down you can 180 degrees rotate the streamed video using the following variable ([docs](https://www.balena.io/docs/learn/manage/serv-vars/)):
+  - `rotation` = `1`
 - Push code to your device with a simple `git push balena master`
 - See the magic happening, your device is getting updated Over-The-Air!
 - If you want your device to be accessible on WAN, enable its public URL
@@ -25,7 +27,7 @@ Share your balena device's camera feed.
 
 - This project uses [WebRTC](https://webrtc.org/) (a Real-Time Communication protocol).
 - A direct WebRTC connection fails in some cases.
-- This current version works on all the cases that a direct connection is possible.
+- This current version uses mjpeg streaming when the webRTC connection fails.
 
 ## Supported Browsers
 
