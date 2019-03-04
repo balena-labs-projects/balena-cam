@@ -22,21 +22,20 @@ function peerConnectionBad(pc) {
   return ((pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'failed' || pc.iceConnectionState === 'closed'));
 }
 
-function showContainer(kind){
+function hideAllContainers() {
+    document.getElementById('spinner-container').style.display = 'none';
+    document.getElementById('video-container').style.display = 'none';
+    document.getElementById('fail-container').style.display = 'none';
+    document.getElementById('mjpeg-container').style.display = 'none';
+}
+
+function showContainer(kind) {
+  hideAllContainers();
   if (kind === 'video') {
-    document.getElementById('spinner-container').style.display = 'none';
     document.getElementById('video-container').style.display = 'block';
-    document.getElementById('fail-container').style.display = 'none';
-    document.getElementById('mjpeg-container').style.display = 'none';
   } else if (kind === 'fail') {
-    document.getElementById('spinner-container').style.display = 'none';
-    document.getElementById('video-container').style.display = 'none';
     document.getElementById('fail-container').style.display = 'initial';
-    document.getElementById('mjpeg-container').style.display = 'none';
   } else if (kind === 'mjpeg') {
-    document.getElementById('spinner-container').style.display = 'none';
-    document.getElementById('video-container').style.display = 'none';
-    document.getElementById('fail-container').style.display = 'none';
     document.getElementById('mjpeg-container').style.display = 'block';
   } else {
     console.error('No container that is kind of: ' + kind);
@@ -50,10 +49,20 @@ function createNewPeerConnection() {
     function mainIceListener() {
       console.warn(pc.iceConnectionState);
       if  (peerConnectionBad(pc)){
-        showContainer('fail');
+        if (state == 0) {
+          //this means webrtc connection is not possible
+          state = 2;
+          startMJPEG();
+        }
+        if (state !== 2) {
+          showContainer('fail');
+        }
       }
       if (peerConnectionGood(pc)) {
         if (!isVideoAttached) {
+          if (state === 0) {
+            state = 1;
+          }
           isVideoAttached = true;
           attachStreamToVideoElement(pc, document.getElementById('video'));
           cleanup();
@@ -206,6 +215,9 @@ function reconnect() {
 }
 
 function startMJPEG() {
+  console.warn('WebRTC does not work! Starting MJPEG streaming.')
+  primaryPeerConnection.close();
+  primaryPeerConnection = null;
   var mjpeg = new Image();
   mjpeg.className = 'img-fluid';
   mjpeg.src = '/mjpeg';
@@ -214,4 +226,3 @@ function startMJPEG() {
 }
 
 primaryPeerConnection = createNewPeerConnection();
-
