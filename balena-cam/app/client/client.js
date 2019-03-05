@@ -71,6 +71,7 @@ function createNewPeerConnection() {
         }
       }
       if (peerConnectionGood(pc)) {
+        document.getElementById('webrtc').style.display = 'initial';
         if (!isVideoAttached) {
           if (state === 0) {
             state = 1;
@@ -227,6 +228,7 @@ function reconnect() {
 }
 
 function startMJPEG() {
+  document.getElementById('vpn').style.display = 'initial';
   console.warn('WebRTC does not work! Starting MJPEG streaming.')
   primaryPeerConnection.close();
   primaryPeerConnection = null;

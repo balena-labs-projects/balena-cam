@@ -98,3 +98,10 @@ body {
 .footer > .container {
   align: center;
 }
+
+.indicator {
+  color: white;
+  margin-top: 12%;
+  font-size: 80%;
+  display: none;
+}
