@@ -9,6 +9,18 @@ window.onbeforeunload = function() {
   }
 };
 
+window.addEventListener("orientationchange", function() {
+    if (screen.orientation.angle === 90) {
+      document.getElementById('footer').style = 'margin-top: 1em; position: relative;';
+      document.getElementById('video').style = 'height: 70%';
+      document.getElementById('video').scrollIntoView();
+    }
+    if (screen.orientation.angle === 0) {
+      document.getElementById('footer').style = 'margin-top: 1em; position: absolute;';
+      document.getElementById('video').style = 'height: 100%';
+    }
+});
+
 function attachStreamToVideoElement(pc, videoElem){
   console.log('Attaching stream...');
   videoElem.srcObject = pc.getRemoteStreams()[0];
@@ -132,7 +144,7 @@ function requestFullscreen(element) {
 function fullscreen() {
   var video = document.getElementById('video');
   if (supportsFullscreen()) {
-    requestFullscreen(video);
+    setTimeout(requestFullscreen(video), 100);
   }
 }
 

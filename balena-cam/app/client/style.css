@@ -98,10 +98,3 @@ body {
 .footer > .container {
   align: center;
 }
-
-@media (max-width: 992px) and (orientation: landscape) {
-  .footer {
-    margin-top: 1em;
-    position: relative;
-  }
-}
