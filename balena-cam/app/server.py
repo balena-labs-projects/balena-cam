@@ -1,4 +1,5 @@
 import asyncio, json, os, cv2
+from time import sleep
 from aiohttp import web
 from av import VideoFrame
 from aiortc import RTCPeerConnection, RTCSessionDescription, VideoStreamTrack
@@ -19,6 +20,7 @@ class CameraDevice():
 
     def get_latest_frame(self):
         ret, frame = self.cap.read()
+        sleep(1.0 / 100.0)
         return self.rotate(frame)
 
     def get_jpeg_frame(self):
@@ -36,6 +38,7 @@ class RTCVideoStream(VideoStreamTrack):
 
     async def recv(self):
         self.data_bgr = await asyncio.get_event_loop().run_in_executor(None, self.camera_device.get_latest_frame)
+        await asyncio.sleep(1.0 / 100.0)
         frame = VideoFrame.from_ndarray(self.data_bgr, format='bgr24')
         pts, time_base = await self.next_timestamp()
         frame.pts = pts
