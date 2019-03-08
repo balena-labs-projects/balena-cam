@@ -13,12 +13,18 @@
 
   <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="#"><img style="width: 10rem; height: auto;" src="./balena-cam.svg"></a>
+      <a class="navbar-brand" href="#"><img style="width: 13rem; height: auto;" src="./balena-cam.svg"></a>
       <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#collapsibleNavbar" aria-expanded="false">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="navbar-collapse collapse" id="collapsibleNavbar" style="">
         <ul class="navbar-nav ml-auto">
+          <li id="webrtc" class="nav-item indicator">
+            Connection over WebRTC
+          </li>
+          <li id="vpn" class="nav-item indicator">
+            Connection over BalenaVPN
+          </li>
           <li class="nav-item navbar-brand">
             <a class="nav-link active" href="https://github.com/resin-io-playground/balena-cam">
               <i class="fa fa-github" style="font-size: 150%"></i>
@@ -61,13 +67,18 @@
     </div>
   </div>
 
-    <footer class="footer">
-      <div class="container">
-        <p>is an open source project by
-          <a href="https://www.balena.io/" > <img style="width: 6rem; height: auto;" src="./balena-logo.svg"> </a>
-        </p>
-      </div>
-    </footer>
+  <div id="mjpeg-container" class="container">
+    <div id="mjpeg" class="d-flex justify-content-center align-items-center">
+    </div>
+  </div>
+
+  <footer id="footer" class="footer">
+    <div class="container">
+      <p>is an open source project by
+        <a href="https://www.balena.io/" > <img style="width: 6rem; height: auto;" src="./balena-logo.svg"> </a>
+      </p>
+    </div>
+  </footer>
 
   <script src="client.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

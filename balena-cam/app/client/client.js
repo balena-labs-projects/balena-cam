@@ -1,60 +1,95 @@
-var pc = new RTCPeerConnection({sdpSemantics: 'unified-plan'});
+var primaryPeerConnection = null;
+var backupPeerConnection = null;
+var vfdIntervalId = null;
+var state = 0;
 
 window.onbeforeunload = function() {
-  pc.close();
+  if (primaryPeerConnection !== null) {
+    primaryPeerConnection.close();
+  }
 };
 
-pc.addEventListener('icegatheringstatechange', function() {
-  console.warn(pc.iceGatheringState);
-}, false);
-
-pc.addEventListener('iceconnectionstatechange', function() {
-  console.warn(pc.iceConnectionState);
-  if  (peerConnectionBad()){
-    showContainer('fail');
-  }
-  if (peerConnectionGood()) {
-    showContainer('video');
-  }
-}, false);
-
-pc.addEventListener('signalingstatechange', function() {
-  console.warn(pc.signalingState);
-}, false);
-
-pc.addEventListener('track', function(evt) {
-  console.log('incoming track')
-  if (evt.track.kind == 'video') {
-    document.getElementById('video').srcObject = evt.streams[0];
-    console.log('Video element added.');
-  }
+window.addEventListener("orientationchange", function() {
+    if (screen.orientation.angle === 90) {
+      document.getElementById('footer').style = 'margin-top: 1em; position: relative;';
+      document.getElementById('video').style = 'height: 70%';
+      document.getElementById('video').scrollIntoView();
+    }
+    if (screen.orientation.angle === 0) {
+      document.getElementById('footer').style = 'margin-top: 1em; position: absolute;';
+      document.getElementById('video').style = 'height: 100%';
+    }
 });
 
-function peerConnectionGood() {
-  return ((typeof pc.iceConnectionState !== 'undefined') && (pc.iceConnectionState === 'connected' || pc.iceConnectionState === 'completed'));
+function attachStreamToVideoElement(pc, videoElem){
+  console.log('Attaching stream...');
+  videoElem.srcObject = pc.getRemoteStreams()[0];
 }
 
-function peerConnectionBad() {
-  return ((typeof pc.iceConnectionState !== 'undefined') && (pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'failed' || pc.iceConnectionState === 'closed'));
+function peerConnectionGood(pc) {
+  return ((pc.iceConnectionState === 'connected' || pc.iceConnectionState === 'completed'));
 }
 
-function showContainer(kind){
-  if (kind === 'video') {
-    document.getElementById('spinner-container').style.display = 'none';
-    document.getElementById('video-container').style.display = 'block';
-    document.getElementById('fail-container').style.display = 'none';
-  } else if (kind === 'fail') {
+function peerConnectionBad(pc) {
+  return ((pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'failed' || pc.iceConnectionState === 'closed'));
+}
+
+function hideAllContainers() {
     document.getElementById('spinner-container').style.display = 'none';
     document.getElementById('video-container').style.display = 'none';
+    document.getElementById('fail-container').style.display = 'none';
+    document.getElementById('mjpeg-container').style.display = 'none';
+}
+
+function showContainer(kind) {
+  hideAllContainers();
+  if (kind === 'video') {
+    document.getElementById('video-container').style.display = 'block';
+  } else if (kind === 'fail') {
     document.getElementById('fail-container').style.display = 'initial';
+  } else if (kind === 'mjpeg') {
+    document.getElementById('mjpeg-container').style.display = 'block';
   } else {
     console.error('No container that is kind of: ' + kind);
   }
 }
 
-function negotiate() {
-  pc.addTransceiver('video', {direction: 'recvonly'});
-  return pc.createOffer().then(function(offer) {
+function createNewPeerConnection() {
+  var pc = new RTCPeerConnection({sdpSemantics: 'unified-plan'});
+  var isVideoAttached = false;
+  new Promise(function (resolve, reject) {
+    function mainIceListener() {
+      console.warn(pc.iceConnectionState);
+      if  (peerConnectionBad(pc)){
+        if (state == 0) {
+          //this means webrtc connection is not possible
+          state = 2;
+          startMJPEG();
+        }
+        if (state !== 2) {
+          showContainer('fail');
+        }
+      }
+      if (peerConnectionGood(pc)) {
+        document.getElementById('webrtc').style.display = 'initial';
+        if (!isVideoAttached) {
+          if (state === 0) {
+            state = 1;
+          }
+          isVideoAttached = true;
+          attachStreamToVideoElement(pc, document.getElementById('video'));
+          cleanup();
+          startVideoFreezeDetection(pc);
+        }
+        showContainer('video');
+      }
+    }
+    pc.addEventListener('iceconnectionstatechange', mainIceListener);
+    resolve();
+  }).then(function () {
+    pc.addTransceiver('video', {direction: 'recvonly'});
+    return pc.createOffer()
+  }).then(function(offer) {
     return pc.setLocalDescription(offer);
   }).then(function() {
     // wait for ICE gathering to complete
@@ -94,6 +129,7 @@ function negotiate() {
   }).catch(function(e){
     console.error(e);
   });
+  return pc
 }
 
 function supportsFullscreen() {
@@ -109,23 +145,11 @@ function requestFullscreen(element) {
 function fullscreen() {
   var video = document.getElementById('video');
   if (supportsFullscreen()) {
-    requestFullscreen(video);
+    setTimeout(requestFullscreen(video), 100);
   }
 }
 
-function checkVideoFreeze() {
-  var previousPlaybackTime;
-  setInterval(function() {
-    if (peerConnectionGood() && previousPlaybackTime === video.currentTime && video.currentTime !== 0) {
-      console.warn("Video freeze detected!!!");
-      pc.close();
-      location.reload();
-    } else {
-      previousPlaybackTime = video.currentTime;
-    }
-  }, 3000);
-}
-
+// Use on firefox
 function getCurrentFrame() {
     var canvas = document.createElement("canvas");
     canvas.width = video.videoWidth;
@@ -135,27 +159,84 @@ function getCurrentFrame() {
     return canvas.toDataURL('image/png');
 }
 
-function isVideoFrozen() {
+function isVideoFrozen(pc) {
   var previousFrame;
   var ignoreFirst = true;
-  setInterval(function() {
-    if (peerConnectionGood() && video.currentTime > 0 && getCurrentFrame() === previousFrame) {
+  vfdIntervalId = setInterval(function() {
+    if (peerConnectionGood(pc) && video.currentTime > 0 && getCurrentFrame() === previousFrame) {
       if (ignoreFirst) {
         ignoreFirst = false;
         return
       }
       console.warn("Video freeze detected using frames!!!");
-      pc.close();
-      location.reload();
+      reconnect();
     } else {
       previousFrame = getCurrentFrame();
     }
   }, 3000);
 }
 
-negotiate();
-if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-  isVideoFrozen();
-} else {
-  checkVideoFreeze();
+// Use on Chrome
+function checkVideoFreeze(pc) {
+  var previousPlaybackTime;
+  vfdIntervalId = setInterval(function() {
+    if (peerConnectionGood(pc) && previousPlaybackTime === video.currentTime && video.currentTime !== 0) {
+      console.warn("Video freeze detected!!!");
+      reconnect();
+    } else {
+      previousPlaybackTime = video.currentTime;
+    }
+  }, 3000);
 }
+
+function startVideoFreezeDetection(pc) {
+  stopVideoFreezeDetection();
+  if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+    isVideoFrozen(pc);
+  } else {
+    checkVideoFreeze(pc);
+  }
+}
+
+function stopVideoFreezeDetection() {
+  if (vfdIntervalId !== null) {
+    console.log('Stopping Current Video Freeze Detector');
+    clearInterval(vfdIntervalId);
+  }
+}
+
+function cleanup() {
+  if (backupPeerConnection !== null) {
+    console.log('Cleaning Up...')
+    var tmp = primaryPeerConnection;
+    primaryPeerConnection = backupPeerConnection;
+    backupPeerConnection = tmp;
+    backupPeerConnection.close();
+    backupPeerConnection = null;
+    var thisInterval = setInterval(function (){
+      if (peerConnectionGood(primaryPeerConnection) && backupPeerConnection === null) {
+        showContainer('video');
+        clearInterval(thisInterval);
+      }
+    }, 100);
+  }
+}
+
+function reconnect() {
+  console.log('Reconnecting');
+  backupPeerConnection = createNewPeerConnection();
+}
+
+function startMJPEG() {
+  document.getElementById('vpn').style.display = 'initial';
+  console.warn('WebRTC does not work! Starting MJPEG streaming.')
+  primaryPeerConnection.close();
+  primaryPeerConnection = null;
+  var mjpeg = new Image();
+  mjpeg.className = 'img-fluid';
+  mjpeg.src = '/mjpeg';
+  document.getElementById('mjpeg').appendChild(mjpeg);
+  showContainer('mjpeg')
+}
+
+primaryPeerConnection = createNewPeerConnection();

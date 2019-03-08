@@ -80,6 +80,10 @@ body {
   display: none;
 }
 
+#mjpeg-container {
+  display: none;
+}
+
 .footer {
   position: absolute;
   bottom: 0;
@@ -95,9 +99,9 @@ body {
   align: center;
 }
 
-@media (max-width: 992px) and (orientation: landscape) {
-  .footer {
-    margin-top: 1em;
-    position: relative;
-  }
+.indicator {
+  color: white;
+  margin-top: 12%;
+  font-size: 80%;
+  display: none;
 }
