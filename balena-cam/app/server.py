@@ -18,17 +18,16 @@ class CameraDevice():
             frame = cv2.warpAffine(frame, M, (w, h))
         return frame
 
-    def get_latest_frame(self):
+    async def get_latest_frame(self):
         ret, frame = self.cap.read()
-        sleep(1.0 / 100.0)
+        await asyncio.sleep(0)
         return self.rotate(frame)
 
-    def get_jpeg_frame(self):
+    async def get_jpeg_frame(self):
         encode_param = (int(cv2.IMWRITE_JPEG_QUALITY), 90)
-        frame = self.get_latest_frame()
+        frame = await self.get_latest_frame()
         frame, encimg = cv2.imencode('.jpg', frame, encode_param)
         return encimg.tostring()
-
 
 class RTCVideoStream(VideoStreamTrack):
     def __init__(self, camera_device):
@@ -37,8 +36,7 @@ class RTCVideoStream(VideoStreamTrack):
         self.data_bgr = None
 
     async def recv(self):
-        self.data_bgr = await asyncio.get_event_loop().run_in_executor(None, self.camera_device.get_latest_frame)
-        await asyncio.sleep(1.0 / 100.0)
+        self.data_bgr = await self.camera_device.get_latest_frame()
         frame = VideoFrame.from_ndarray(self.data_bgr, format='bgr24')
         pts, time_base = await self.next_timestamp()
         frame.pts = pts
@@ -99,7 +97,7 @@ async def mjpeg_handler(request):
     try:
         await response.prepare(request)
         while True:
-            data = await asyncio.get_event_loop().run_in_executor(None, camera_device.get_jpeg_frame)
+            data = await camera_device.get_jpeg_frame()
             await asyncio.sleep(0.2) # this means that the maximum FPS is 5
             await response.write(
                 '--{}\r\n'.format(boundary).encode('utf-8'))
