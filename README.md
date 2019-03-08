@@ -1,4 +1,4 @@
-# balena-cam
+![](./balena-cam/app/client/balena-cam-readme.svg)
 
 Live stream your balena device's camera feed.
 
