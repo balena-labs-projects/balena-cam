@@ -137,4 +137,4 @@ if __name__ == '__main__':
     app.router.add_get('/style.css', stylesheet)
     app.router.add_post('/offer', offer)
     app.router.add_get('/mjpeg', mjpeg_handler)
-    web.run_app(app, port=3000)
+    web.run_app(app, port=80)
