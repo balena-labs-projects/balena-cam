@@ -48,14 +48,6 @@
       </div>
     </div>
 
-    <div id="video-container" class="container" ondblclick="fullscreen()">
-      <div class="d-flex justify-content-center align-items-center">
-        <div class="p5 embed-responsive embed-responsive-16by9 position-relative">
-          <video muted id="video" class="embed-responsive-item" autoplay="true"></video>
-        </div>
-      </div>
-    </div>
-
     <div id="fail-container" class="container">
       <div class="d-flex justify-content-center align-items-center">
         <h4>Connection failed.</h4>
@@ -70,8 +62,28 @@
       </div>
     </div>
 
+    <div id="video-container" class="container">
+      <div class="d-flex justify-content-center align-items-center flex-column">
+        <div class="p5 embed-responsive embed-responsive-16by9 position-relative">
+          <video muted id="video" class="embed-responsive-item" autoplay="true" ondblclick="fullscreen(1)" onmouseover="showFullscreenMessage()"></video>
+        </div>
+        <div id="fullscreen-info-1" class="text-center">
+          <h6 >
+            Double tap the video to enter fullscreen mode!
+          </h6>
+        </div>
+      </div>
+    </div>
+
     <div id="mjpeg-container" class="container">
-      <div id="mjpeg" class="d-flex justify-content-center align-items-center">
+      <div class="d-flex justify-content-center align-items-center flex-column">
+        <div id="mjpeg" class="d-flex justify-content-center align-items-center" ondblclick="fullscreen(2)" onmouseover="showFullscreenMessage()">
+        </div>
+        <div id="fullscreen-info-2" class="text-center">
+          <h6>
+            Double tap the video to enter fullscreen mode!
+          </h6>
+        </div>
       </div>
     </div>
   </div>

@@ -95,6 +95,16 @@ html, body {
   display: none;
 }
 
+#fullscreen-info-1 {
+  display: none;
+  margin-top: 1vh;
+}
+
+#fullscreen-info-2 {
+  display: none;
+  margin-top: 1vh;
+}
+
 #footer {
   margin-top: auto;
   width: 100%;
