@@ -9,17 +9,17 @@ window.onbeforeunload = function() {
   }
 };
 
-window.addEventListener("orientationchange", function() {
-    if (screen.orientation.angle === 90) {
-      document.getElementById('footer').style = 'margin-top: 1em; position: relative;';
-      document.getElementById('video').style = 'height: 70%';
-      document.getElementById('video').scrollIntoView();
-    }
-    if (screen.orientation.angle === 0) {
-      document.getElementById('footer').style = 'margin-top: 1em; position: absolute;';
-      document.getElementById('video').style = 'height: 100%';
-    }
-});
+function showFullscreenMessage() {
+  if (state === 1) {
+    var elem = document.getElementById('fullscreen-info-1');
+  } else {
+    var elem = document.getElementById('fullscreen-info-2');
+  }
+  elem.style.display = 'initial';
+  setTimeout(function () {
+    elem.style.display = 'none';
+  }, 2000);
+}
 
 function attachStreamToVideoElement(pc, videoElem){
   console.log('Attaching stream...');
@@ -142,8 +142,12 @@ function requestFullscreen(element) {
   (element.requestFullScreen && element.requestFullScreen()));
 }
 
-function fullscreen() {
-  var video = document.getElementById('video');
+function fullscreen(elem) {
+  if (elem === 1) {
+    var video = document.getElementById('video');
+  } else {
+    var video = document.getElementById('mjpeg-vid');
+  }
   if (supportsFullscreen()) {
     setTimeout(requestFullscreen(video), 100);
   }
@@ -233,6 +237,7 @@ function startMJPEG() {
   primaryPeerConnection.close();
   primaryPeerConnection = null;
   var mjpeg = new Image();
+  mjpeg.id = 'mjpeg-vid';
   mjpeg.className = 'img-fluid';
   mjpeg.src = '/mjpeg';
   document.getElementById('mjpeg').appendChild(mjpeg);
