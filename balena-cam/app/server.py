@@ -1,4 +1,4 @@
-import asyncio, json, os, cv2
+import asyncio, json, os, cv2, platform
 from time import sleep
 from aiohttp import web
 from av import VideoFrame
@@ -119,7 +119,17 @@ async def on_shutdown(app):
     coros = [pc.close() for pc in pcs]
     await asyncio.gather(*coros)
 
+def checkDeviceReadiness():
+    if not os.path.exists('/dev/video0') and platform.system() == 'Linux':
+        print('Video device is not ready')
+        print('Trying to load bcm2835-v4l2 driver...')
+        os.system('bash -c "modprobe bcm2835-v4l2"')
+    else:
+        print('Video device is ready')
+
 if __name__ == '__main__':
+    checkDeviceReadiness()
+
     ROOT = os.path.dirname(__file__)
     pcs = set()
     camera_device = CameraDevice()
