@@ -63,6 +63,9 @@ async def balena_logo(request):
     content = open(os.path.join(ROOT, 'client/balena-logo.svg'), 'r').read()
     return web.Response(content_type='image/svg+xml', text=content)
 
+async def favicon(request):
+    return web.FileResponse(os.path.join(ROOT, 'client/favicon.png'))
+
 async def offer(request):
     params = await request.json()
     offer = RTCSessionDescription(
@@ -131,6 +134,7 @@ if __name__ == '__main__':
     app = web.Application()
     app.on_shutdown.append(on_shutdown)
     app.router.add_get('/', index)
+    app.router.add_get('/favicon.png', favicon)
     app.router.add_get('/balena-logo.svg', balena_logo)
     app.router.add_get('/balena-cam.svg', balena)
     app.router.add_get('/client.js', javascript)
