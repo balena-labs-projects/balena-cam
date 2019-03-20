@@ -23,7 +23,9 @@ function showFullscreenMessage() {
 
 function attachStreamToVideoElement(pc, videoElem){
   console.log('Attaching stream...');
-  videoElem.srcObject = pc.getRemoteStreams()[0];
+  var srcStream = new MediaStream();
+  srcStream.addTrack(pc.getReceivers()[0].track);
+  videoElem.srcObject = srcStream;
 }
 
 function peerConnectionGood(pc) {
