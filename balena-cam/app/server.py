@@ -1,4 +1,4 @@
-import asyncio, json, os, cv2, platform
+import asyncio, json, os, cv2, platform, sys
 from time import sleep
 from aiohttp import web
 from av import VideoFrame
@@ -124,6 +124,8 @@ def checkDeviceReadiness():
         print('Video device is not ready')
         print('Trying to load bcm2835-v4l2 driver...')
         os.system('bash -c "modprobe bcm2835-v4l2"')
+        sleep(1)
+        sys.exit()
     else:
         print('Video device is ready')
 
