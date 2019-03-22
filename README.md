@@ -18,12 +18,13 @@ Live stream your balena device's camera feed.
 
 - Using [Balena CLI](https://www.balena.io/docs/reference/cli/), push the code with `balena push <application-name>`.
 - See the magic happening, your device is getting updated 🌟Over-The-Air🌟!
+- In order for your device to be accessible over the internet, toggle the switch called `PUBLIC DEVICE URL`.
+- Once your device finishes updating, you can watch the live feed by visiting your device's public URL.
 
-### Extra
+### Optional Settings
 
 - To rotate the camera feed by 180 degrees, add a **device variable**: `rotation` = `1` (More information about this on the [docs](https://www.balena.io/docs/learn/manage/serv-vars/)).
-- If you want your device to be accessible over the internet, toggle the switch called `PUBLIC DEVICE URL`.
-- Once your device finishes updating, you can watch the live feed by visiting your device's public URL.
+- To suppress any warnings, add a **device variable**: `PYTHONWARNINGS` = `ignore`
 
 ## Additional Information
 
@@ -33,8 +34,13 @@ Live stream your balena device's camera feed.
 
 ## Supported Browsers
 
-- Chrome
-- Firefox
+- **Chrome**
+- **Firefox**
+- **Safari**
+- **Edge** (only mjpeg stream)
+
+## Installation Note
+If your device is a Raspberry Pi One, Zero or ZeroW please use the [pizerow](https://github.com/balena-io-playground/balena-cam/tree/pizerow) branch of this project.
 
 ## License
 
