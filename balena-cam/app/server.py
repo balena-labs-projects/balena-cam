@@ -97,21 +97,18 @@ async def mjpeg_handler(request):
         'Content-Type': 'multipart/x-mixed-replace; '
                         'boundary=--%s' % boundary,
     })
-    try:
-        await response.prepare(request)
-        while True:
-            data = await camera_device.get_jpeg_frame()
-            await asyncio.sleep(0.2) # this means that the maximum FPS is 5
-            await response.write(
-                '--{}\r\n'.format(boundary).encode('utf-8'))
-            await response.write(b'Content-Type: image/jpeg\r\n')
-            await response.write('Content-Length: {}\r\n'.format(
-                    len(data)).encode('utf-8'))
-            await response.write(b"\r\n")
-            await response.write(data)
-            await response.write(b"\r\n")
-    except:
-        pass
+    await response.prepare(request)
+    while True:
+        data = await camera_device.get_jpeg_frame()
+        await asyncio.sleep(0.2) # this means that the maximum FPS is 5
+        await response.write(
+            '--{}\r\n'.format(boundary).encode('utf-8'))
+        await response.write(b'Content-Type: image/jpeg\r\n')
+        await response.write('Content-Length: {}\r\n'.format(
+                len(data)).encode('utf-8'))
+        await response.write(b"\r\n")
+        await response.write(data)
+        await response.write(b"\r\n")
     return response
 
 async def on_shutdown(app):

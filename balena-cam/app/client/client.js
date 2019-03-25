@@ -23,7 +23,9 @@ function showFullscreenMessage() {
 
 function attachStreamToVideoElement(pc, videoElem){
   console.log('Attaching stream...');
-  videoElem.srcObject = pc.getRemoteStreams()[0];
+  var srcStream = new MediaStream();
+  srcStream.addTrack(pc.getReceivers()[0].track);
+  videoElem.srcObject = srcStream;
 }
 
 function peerConnectionGood(pc) {
@@ -61,9 +63,8 @@ function createNewPeerConnection() {
     function mainIceListener() {
       console.warn(pc.iceConnectionState);
       if  (peerConnectionBad(pc)){
-        if (state == 0) {
+        if (state === 0) {
           //this means webrtc connection is not possible
-          state = 2;
           startMJPEG();
         }
         if (state !== 2) {
@@ -232,10 +233,13 @@ function reconnect() {
 }
 
 function startMJPEG() {
+  if (state !== 3) {
+    primaryPeerConnection.close();
+    primaryPeerConnection = null;
+  }
   document.getElementById('vpn').style.display = 'initial';
   console.warn('WebRTC does not work! Starting MJPEG streaming.')
-  primaryPeerConnection.close();
-  primaryPeerConnection = null;
+  state = 2;
   var mjpeg = new Image();
   mjpeg.id = 'mjpeg-vid';
   mjpeg.className = 'img-fluid';
@@ -244,4 +248,10 @@ function startMJPEG() {
   showContainer('mjpeg')
 }
 
-primaryPeerConnection = createNewPeerConnection();
+if (window.navigator.userAgent.indexOf("Edge") > -1) {
+  //state 3 means the client is a Microsoft Edge
+  state = 3;
+  startMJPEG();
+} else {
+  primaryPeerConnection = createNewPeerConnection();
+}
