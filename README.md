@@ -1,4 +1,4 @@
-![](./balena-cam/app/client/balena-cam-readme.svg)
+![](./balena-cam/app/client/balena-cam-readme.png)
 
 Live stream your balena device's camera feed.
 
@@ -40,7 +40,7 @@ Live stream your balena device's camera feed.
 - **Edge** (only mjpeg stream)
 
 ## Installation Note
-If your device is a Raspberry Pi One, Zero or ZeroW please use the [pizerow](https://github.com/balena-io-playground/balena-cam/tree/pizerow) branch of this project.
+If your device is a Raspberry Pi One, Zero or ZeroW please use [this](https://github.com/balena-io-playground/balena-cam/tree/pizero-armv6) branch of this project.
 
 ## License
 
