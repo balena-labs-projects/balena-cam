@@ -39,9 +39,6 @@ Live stream your balena device's camera feed.
 - **Safari**
 - **Edge** (only mjpeg stream)
 
-## Installation Note
-If your device is a Raspberry Pi One, Zero or ZeroW please use [this](https://github.com/balena-io-playground/balena-cam/tree/pizero-armv6) branch of this project.
-
 ## License
 
 Copyright 2018 Balena Ltd.
