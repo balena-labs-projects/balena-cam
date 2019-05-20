@@ -21,6 +21,19 @@ Live stream your balena device's camera feed.
 - In order for your device to be accessible over the internet, toggle the switch called `PUBLIC DEVICE URL`.
 - Once your device finishes updating, you can watch the live feed by visiting your device's public URL.
 
+### Password Protect your balenaCam device
+
+To protect your balenaCam devices using a username and a password set the following environment variables.
+
+| Key            | Value
+|----------------|---------------------------
+|**`username`**  | **`yourUserNameGoesHere`**
+|**`password`**  | **`yourPasswordGoesHere`**
+
+💡 **Tips:** 💡 
+* You can set them as [fleet environment variables](https://www.balena.io/docs/learn/manage/serv-vars/#fleet-environment-and-service-variables) and every new balenaCam device you add will be password protected.
+* You can set them as [device environment variables](https://www.balena.io/docs/learn/manage/serv-vars/#device-environment-and-service-variables) and the username and password will be different on each device.
+
 ### Optional Settings
 
 - To rotate the camera feed by 180 degrees, add a **device variable**: `rotation` = `1` (More information about this on the [docs](https://www.balena.io/docs/learn/manage/serv-vars/)).

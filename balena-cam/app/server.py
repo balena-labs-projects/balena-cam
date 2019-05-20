@@ -3,6 +3,7 @@ from time import sleep
 from aiohttp import web
 from av import VideoFrame
 from aiortc import RTCPeerConnection, RTCSessionDescription, VideoStreamTrack
+from aiohttp_basicauth import BasicAuthMiddleware
 
 class CameraDevice():
     def __init__(self):
@@ -140,7 +141,22 @@ if __name__ == '__main__':
     except:
         pass
 
-    app = web.Application()
+    auth = []
+    if 'username' in os.environ and 'password' in os.environ:
+        print('\n#############################################################')
+        print('Authorization is enabled.')
+        print('Your balenaCam is password protected.')
+        print('#############################################################\n')
+        auth.append(BasicAuthMiddleware(username = os.environ['username'], password = os.environ['password']))
+    else:
+        print('\n#############################################################')
+        print('Authorization is disabled.')
+        print('Anyone can access your balenaCam, using the device\'s URL!')
+        print('Set the username and password environment variables \nto enable authorization.')
+        print('For more info visit: \nhttps://github.com/balena-io-playground/balena-cam')
+        print('#############################################################\n')
+
+    app = web.Application(middlewares=auth)
     app.on_shutdown.append(on_shutdown)
     app.router.add_get('/', index)
     app.router.add_get('/favicon.png', favicon)
