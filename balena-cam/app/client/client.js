@@ -2,6 +2,14 @@ var primaryPeerConnection = null;
 var backupPeerConnection = null;
 var vfdIntervalId = null;
 var state = 0;
+var config = {
+  'sdpSemantics': 'unified-plan',
+  'iceServers': [
+    {
+      'urls': 'stun:stun.l.google.com:19302'
+    },
+  ]
+};
 
 window.onbeforeunload = function() {
   if (primaryPeerConnection !== null) {
@@ -57,9 +65,9 @@ function showContainer(kind) {
 }
 
 function createNewPeerConnection() {
-  var pc = new RTCPeerConnection({sdpSemantics: 'unified-plan'});
+  var pc = new RTCPeerConnection(config);
   var isVideoAttached = false;
-  new Promise(function (resolve, reject) {
+  new Promise(function (resolve) {
     function mainIceListener() {
       console.warn(pc.iceConnectionState);
       if  (peerConnectionBad(pc)){
