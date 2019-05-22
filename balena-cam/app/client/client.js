@@ -57,7 +57,7 @@ function showContainer(kind) {
 }
 
 function createNewPeerConnection() {
-  var pc = new RTCPeerConnection({sdpSemantics: 'unified-plan'});
+  var pc = new RTCPeerConnection(config);
   var isVideoAttached = false;
   new Promise(function (resolve, reject) {
     function mainIceListener() {
@@ -253,5 +253,14 @@ if (window.navigator.userAgent.indexOf("Edge") > -1) {
   state = 3;
   startMJPEG();
 } else {
-  primaryPeerConnection = createNewPeerConnection();
+  var config = null;
+  fetch('/ice-config').then(function(response) {
+    return response.json();
+  }).then(function(configData){
+    config = configData;
+    primaryPeerConnection = createNewPeerConnection();
+  }).catch(function(e){
+    console.error('Error while getting the ICE server configuration');
+    console.error(e);
+  });
 }
