@@ -129,6 +129,8 @@ function createNewPeerConnection() {
     return pc.setRemoteDescription(answer);
   }).catch(function(e){
     console.error(e);
+    console.log('Unexpected Error: Starting MJPEG stream.')
+    startMJPEG();
   });
   return pc
 }
@@ -262,5 +264,8 @@ if (window.navigator.userAgent.indexOf("Edge") > -1) {
   }).catch(function(e){
     console.error('Error while getting the ICE server configuration');
     console.error(e);
+    state = 3;
+    startMJPEG();
   });
 }
+
