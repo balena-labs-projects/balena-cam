@@ -242,12 +242,21 @@ function startMJPEG() {
   document.getElementById('vpn').style.display = 'initial';
   console.warn('WebRTC does not work! Starting MJPEG streaming.')
   state = 2;
-  var mjpeg = new Image();
-  mjpeg.id = 'mjpeg-vid';
-  mjpeg.className = 'img-fluid';
-  mjpeg.src = '/mjpeg';
-  document.getElementById('mjpeg').appendChild(mjpeg);
-  showContainer('mjpeg')
+
+  var canvas = document.getElementById('mjpeg-canvas');
+  var ctx = canvas.getContext('2d');
+  var image = document.getElementById('mjpeg-image');
+
+  canvas.style.width='640px';
+  canvas.style.height='480px';
+  canvas.width='640';
+  canvas.height='480';
+
+  setInterval(function() {
+    ctx.drawImage(image, 0, 0, 640, 480);
+  }, 50);
+
+  showContainer('mjpeg');
 }
 
 if (window.navigator.userAgent.indexOf("Edge") > -1) {
@@ -268,4 +277,3 @@ if (window.navigator.userAgent.indexOf("Edge") > -1) {
     startMJPEG();
   });
 }
-
