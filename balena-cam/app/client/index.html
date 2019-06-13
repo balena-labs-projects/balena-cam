@@ -19,7 +19,7 @@
         <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#collapsibleNavbar" aria-expanded="false">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="navbar-collapse collapse" id="collapsibleNavbar" style="">
+        <div class="navbar-collapse collapse" id="collapsibleNavbar">
           <ul class="navbar-nav ml-auto">
             <li id="webrtc" class="nav-item indicator">
               Connection over WebRTC
@@ -79,8 +79,6 @@
     <div id="mjpeg-container" class="container">
       <div class="d-flex justify-content-center align-items-center flex-column">
         <div id="mjpeg" class="d-flex justify-content-center align-items-center" ondblclick="fullscreen(2)" onmouseover="showFullscreenMessage()">
-          <canvas id="mjpeg-canvas"></canvas>
-          <image id="mjpeg-image" style="display:none;" src="/mjpeg" />
         </div>
         <div id="fullscreen-info-2" class="text-center">
           <h6>
