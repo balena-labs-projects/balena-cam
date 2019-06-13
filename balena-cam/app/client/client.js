@@ -149,7 +149,7 @@ function fullscreen(elem) {
   if (elem === 1) {
     var video = document.getElementById('video');
   } else {
-    var video = document.getElementById('mjpeg-vid');
+    var video = document.getElementById('mjpeg');
   }
   if (supportsFullscreen()) {
     setTimeout(requestFullscreen(video), 100);
@@ -243,18 +243,33 @@ function startMJPEG() {
   console.warn('WebRTC does not work! Starting MJPEG streaming.')
   state = 2;
 
-  var canvas = document.getElementById('mjpeg-canvas');
+  var canvas = document.createElement("canvas");
   var ctx = canvas.getContext('2d');
-  var image = document.getElementById('mjpeg-image');
+  document.getElementById('mjpeg').appendChild(canvas);
 
-  canvas.style.width='640px';
-  canvas.style.height='480px';
-  canvas.width='640';
-  canvas.height='480';
+  var mjpeg = new Image();
+  mjpeg.id = 'mjpeg-image';
+  mjpeg.src = '/mjpeg';
+  mjpeg.style.visibility = 'hidden';
+  mjpeg.style.position = 'absolute';
+  document.getElementById('mjpeg').appendChild(mjpeg);
 
-  setInterval(function() {
-    ctx.drawImage(image, 0, 0, 640, 480);
-  }, 50);
+  mjpeg.onload = function() {
+    canvas.style.width = mjpeg.width;
+    canvas.style.height = mjpeg.height;
+    canvas.width = mjpeg.width;
+    canvas.height = mjpeg.height;
+    var draw = setInterval(function() {
+      try {
+        ctx.drawImage(mjpeg, 0, 0);
+      } catch (error) {
+        console.error(error);
+        console.warn('Stopping canvas draw.');
+        clearInterval(draw);
+        showContainer('fail');
+      }
+    }, 50);
+  }
 
   showContainer('mjpeg');
 }
