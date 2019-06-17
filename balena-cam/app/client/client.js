@@ -57,7 +57,7 @@ function showContainer(kind) {
 }
 
 function createNewPeerConnection() {
-  var pc = new RTCPeerConnection({sdpSemantics: 'unified-plan'});
+  var pc = new RTCPeerConnection(config);
   var isVideoAttached = false;
   new Promise(function (resolve, reject) {
     function mainIceListener() {
@@ -129,6 +129,8 @@ function createNewPeerConnection() {
     return pc.setRemoteDescription(answer);
   }).catch(function(e){
     console.error(e);
+    console.log('Unexpected Error: Starting MJPEG stream.')
+    startMJPEG();
   });
   return pc
 }
@@ -147,7 +149,7 @@ function fullscreen(elem) {
   if (elem === 1) {
     var video = document.getElementById('video');
   } else {
-    var video = document.getElementById('mjpeg-vid');
+    var video = document.getElementById('mjpeg');
   }
   if (supportsFullscreen()) {
     setTimeout(requestFullscreen(video), 100);
@@ -240,18 +242,56 @@ function startMJPEG() {
   document.getElementById('vpn').style.display = 'initial';
   console.warn('WebRTC does not work! Starting MJPEG streaming.')
   state = 2;
+
+  var canvas = document.createElement("canvas");
+  var ctx = canvas.getContext('2d');
+  document.getElementById('mjpeg').appendChild(canvas);
+
   var mjpeg = new Image();
-  mjpeg.id = 'mjpeg-vid';
-  mjpeg.className = 'img-fluid';
+  mjpeg.id = 'mjpeg-image';
   mjpeg.src = '/mjpeg';
+  mjpeg.style.visibility = 'hidden';
+  mjpeg.style.position = 'absolute';
   document.getElementById('mjpeg').appendChild(mjpeg);
-  showContainer('mjpeg')
+
+  mjpeg.onload = function() {
+    canvas.style.width = mjpeg.width;
+    canvas.style.height = mjpeg.height;
+    canvas.width = mjpeg.width;
+    canvas.height = mjpeg.height;
+    var draw = setInterval(function() {
+      try {
+        ctx.drawImage(mjpeg, 0, 0);
+      } catch (error) {
+        console.error(error);
+        console.warn('Stopping canvas draw.');
+        clearInterval(draw);
+        showContainer('fail');
+      }
+    }, 50);
+  }
+
+  showContainer('mjpeg');
 }
 
-if (window.navigator.userAgent.indexOf("Edge") > -1) {
-  //state 3 means the client is a Microsoft Edge
+var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
+var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+var safariOnIos = isSafari && iOS;
+if (window.navigator.userAgent.indexOf("Edge") > -1  || safariOnIos) {
+  //state 3 means the client is a Microsoft Edge or Safari on iOS
   state = 3;
   startMJPEG();
 } else {
-  primaryPeerConnection = createNewPeerConnection();
+  var config = null;
+  fetch('/ice-config').then(function(response) {
+    return response.json();
+  }).then(function(configData){
+    config = configData;
+    primaryPeerConnection = createNewPeerConnection();
+  }).catch(function(e){
+    console.error('Error while getting the ICE server configuration');
+    console.error(e);
+    state = 3;
+    startMJPEG();
+  });
 }

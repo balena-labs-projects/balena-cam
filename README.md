@@ -39,6 +39,18 @@ To protect your balenaCam devices using a username and a password set the follow
 - To rotate the camera feed by 180 degrees, add a **device variable**: `rotation` = `1` (More information about this on the [docs](https://www.balena.io/docs/learn/manage/serv-vars/)).
 - To suppress any warnings, add a **device variable**: `PYTHONWARNINGS` = `ignore`
 
+### TURN server configuration
+
+
+If you have access to a TURN server and you want your balenaCam devices to use it. You can easily configure it using the following environment variables. When you set them all the app will use that TURN server as a fallback mechanism when a direct WebRTC connection is not possible.
+
+| Key            | Value
+|----------------|---------------------------
+|**`STUN_SERVER`**  | **`stun:stun.l.google.com:19302`**
+|**`TURN_SERVER`**  | **`turn:<yourTURNserverIP>:<yourTURNserverPORT>`**
+|**`TURN_USERNAME`**  | **`<yourTURNserverUsername>`**
+|**`TURN_PASSWORD`**  | **`yourTURNserverPassword`**
+
 ## Additional Information
 
 - This project uses [WebRTC](https://webrtc.org/) (a Real-Time Communication protocol).
