@@ -274,8 +274,11 @@ function startMJPEG() {
   showContainer('mjpeg');
 }
 
-if (window.navigator.userAgent.indexOf("Edge") > -1) {
-  //state 3 means the client is a Microsoft Edge
+var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
+var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+var safariOnIos = isSafari && iOS;
+if (window.navigator.userAgent.indexOf("Edge") > -1  || safariOnIos) {
+  //state 3 means the client is a Microsoft Edge or Safari on iOS
   state = 3;
   startMJPEG();
 } else {
