@@ -34,7 +34,7 @@ COPY ./app/ /usr/src/app/
 # Enable the v4l2 driver for the Raspberry Pi camera
 RUN printf "bcm2835-v4l2\n" >> /etc/modules
 RUN pip3 install --upgrade pip 
-RUN pip3 install aiohttp aiohttp_basicauth==0.1.0 aiortc==0.9.11 opencv-python==3.4.4.19 --index-url https://www.piwheels.org/simple
+RUN pip3 install aiohttp aiohttp_basicauth==0.1.3 aiortc==0.9.11 opencv-python==3.4.4.19 --index-url https://www.piwheels.org/simple
 RUN pip3 install av
 
 CMD ["python3", "/usr/src/app/server.py"]
