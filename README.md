@@ -6,6 +6,7 @@ Live stream your balena device's camera feed.
 
 - Sign up on [balena.io](https://balena.io/) and follow our [Getting Started Guide](https://balena.io/docs/learn/getting-started).
 - Clone this repository to your local workspace.
+- Unset (delete) the environment variable `BALENA_HOST_CONFIG_gpu_mem` or `RESIN_HOST_CONFIG_gpu_mem` if exists, from the `Fleet Configuration` application side tab.
 - Set these variables in the `Fleet Configuration` application side tab
   - `BALENA_HOST_CONFIG_start_x` = `1`
   - Set all the following `gpu_mem` variables so your Pi can autoselect how much memory to allocate for hardware accelerated graphics, based on how much RAM it has available
@@ -15,7 +16,6 @@ Live stream your balena device's camera feed.
     |**`BALENA_HOST_CONFIG_gpu_mem_256`**  | **`192`**
     |**`BALENA_HOST_CONFIG_gpu_mem_512`**  | **`256`**
     |**`BALENA_HOST_CONFIG_gpu_mem_1024`** | **`448`**
-
 - Using [Balena CLI](https://www.balena.io/docs/reference/cli/), push the code with `balena push <application-name>`.
 - See the magic happening, your device is getting updated 🌟Over-The-Air🌟!
 - In order for your device to be accessible over the internet, toggle the switch called `PUBLIC DEVICE URL`.
