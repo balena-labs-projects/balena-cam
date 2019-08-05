@@ -1,0 +1,1 @@
+opencv-python==3.4.4.19 --hash=sha256:329d9d9fdd62b93d44a485aeaab4602c6f5b8555ea8bcc7dbcdc62c90cfe2c3f --hash=sha256:3a32f926e1b319f5813ef8574b7dd3ac427768786ef0efc4a5256eb1a9b8bbe5
