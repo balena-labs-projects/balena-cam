@@ -8,6 +8,10 @@ from aiohttp_basicauth import BasicAuthMiddleware
 class CameraDevice():
     def __init__(self):
         self.cap = cv2.VideoCapture(0)
+        ret, frame = self.cap.read()
+        if not ret:
+            print('Failed to open default camera. Exiting...')
+            sys.exit()
         self.cap.set(3, 640)
         self.cap.set(4, 480)
 
@@ -171,7 +175,7 @@ def checkDeviceReadiness():
         print('Video device is ready')
 
 if __name__ == '__main__':
-    checkDeviceReadiness()
+    #checkDeviceReadiness()
 
     ROOT = os.path.dirname(__file__)
     pcs = set()
