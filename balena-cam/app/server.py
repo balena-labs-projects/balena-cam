@@ -175,7 +175,7 @@ def checkDeviceReadiness():
         print('Video device is ready')
 
 if __name__ == '__main__':
-    #checkDeviceReadiness()
+    checkDeviceReadiness()
 
     ROOT = os.path.dirname(__file__)
     pcs = set()
