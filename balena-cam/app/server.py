@@ -137,7 +137,7 @@ async def mjpeg_handler(request):
     boundary = "frame"
     response = web.StreamResponse(status=200, reason='OK', headers={
         'Content-Type': 'multipart/x-mixed-replace; '
-                        'boundary=--%s' % boundary,
+                        'boundary=%s' % boundary,
     })
     await response.prepare(request)
     while True:
