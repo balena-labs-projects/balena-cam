@@ -56,6 +56,11 @@ If you have access to a TURN server and you want your balenaCam devices to use i
 - This project uses [WebRTC](https://webrtc.org/) (a Real-Time Communication protocol).
 - A direct WebRTC connection fails in some cases.
 - This current version uses mjpeg streaming when the webRTC connection fails.
+- Chrome browsers will hide the local IP address from WebRTC, making the page appear but no camera view. To resolve this try the following
+  - Enter this URL in your browser: chrome://flags
+  - Ensure the media flag is enabled (this will give you access to other features)
+  - Now set "Anonymize local IPs exposed by WebRTC" to Disabled
+  - Refresh your app page
 
 ## Supported Browsers
 
