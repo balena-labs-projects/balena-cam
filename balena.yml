@@ -1,0 +1,5 @@
+applicationConfigVariables:
+    - BALENA_HOST_CONFIG_start_x: 1
+    - BALENA_HOST_CONFIG_gpu_mem_256: 192
+    - BALENA_HOST_CONFIG_gpu_mem_512: 256
+    - BALENA_HOST_CONFIG_gpu_mem_1024: 448
