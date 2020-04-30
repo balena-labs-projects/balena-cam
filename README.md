@@ -4,6 +4,14 @@ Live stream your balena device's camera feed.
 
 ## Getting started
 
+Running this project is as simple as deploying it to a balenaCloud application.
+
+One-click deploy to balenaCloud:
+
+[![](https://balena.io/deploy.png)](https://dashboard.balena-cloud.com/deploy)
+
+**or**
+
 - Sign up on [balena.io](https://balena.io/) and follow our [Getting Started Guide](https://balena.io/docs/learn/getting-started).
 - Clone this repository to your local workspace.
 - Unset (delete) the environment variable `BALENA_HOST_CONFIG_gpu_mem` or `RESIN_HOST_CONFIG_gpu_mem` if exists, from the `Fleet Configuration` application side tab.
