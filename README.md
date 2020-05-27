@@ -69,6 +69,10 @@ If you have access to a TURN server and you want your balenaCam devices to use i
   - Ensure the media flag is enabled (this will give you access to other features)
   - Now set "Anonymize local IPs exposed by WebRTC" to Disabled
   - Refresh your app page
+- Firefox may also hide local IP address from WebRTC, confirm following in 'config:about'
+  - media.peerconnection.enabled: true
+  - if `media.peerconnection.ice.obfuscate_host_addresses` is set to `true`
+    - then set `media.peerconnection.ice.obfuscate_host_addresses.whitelist`: <insert_private_ip_of_camera>
 
 ## Supported Browsers
 
