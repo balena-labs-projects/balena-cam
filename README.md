@@ -78,6 +78,12 @@ If you have access to a TURN server and you want your balenaCam devices to use i
 - **Safari**
 - **Edge** (only mjpeg stream)
 
+## Become a balena poweruser
+
+Want to learn more about what makes balena work? Try one of our [masterclasses](https://www.balena.io/docs/learn/more/masterclasses/overview/). Each lesson is a self-contained, deeply detailed walkthrough on core skills to be successful with your next edge project.
+
+Check them out at our [docs](https://www.balena.io/docs/learn/more/masterclasses/overview/). Also, reach out to us on the [Forums](https://forums.balena.io/) if you need help.
+
 ## License
 
 Copyright 2018 Balena Ltd.
