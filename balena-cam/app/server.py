@@ -1,38 +1,114 @@
-import asyncio, json, os, cv2, platform, sys
+import asyncio
+import json
+import os
+import cv2
+import platform
+import sys
 from time import sleep
 from aiohttp import web
 from av import VideoFrame
 from aiortc import RTCPeerConnection, RTCSessionDescription, VideoStreamTrack, RTCIceServer, RTCConfiguration
 from aiohttp_basicauth import BasicAuthMiddleware
+import numpy as np
+
+kernel_dil = np.ones((10, 10), np.uint8)
+
 
 class CameraDevice():
     def __init__(self):
         self.cap = cv2.VideoCapture(0)
+        self.fgbg = cv2.createBackgroundSubtractorMOG2()
         ret, frame = self.cap.read()
         if not ret:
             print('Failed to open default camera. Exiting...')
             sys.exit()
         self.cap.set(3, 640)
         self.cap.set(4, 480)
+        self.f_counter = 0
 
     def rotate(self, frame):
         if flip:
             (h, w) = frame.shape[:2]
-            center = (w/2, h/2)
+            center = (w / 2, h / 2)
             M = cv2.getRotationMatrix2D(center, 180, 1.0)
             frame = cv2.warpAffine(frame, M, (w, h))
+            print(frame.shape)
         return frame
 
+    def get_background_mask_3channel(self, frame):
+        fgmask = self.get_background_mask(frame)
+        # fgmask = self.fgbg.apply(frame)
+        img2 = np.zeros_like(frame)
+        img2[:, :, 0] = fgmask
+        img2[:, :, 1] = fgmask
+        img2[:, :, 2] = fgmask
+        # print("img2 shape", img2.shape, self.f_counter)
+        return img2
+
+    def get_background_mask(self, frame):
+        fgmask = self.fgbg.apply(frame)
+        print("fgmask shape", fgmask.shape, self.f_counter)
+
+        # dilation
+        dilation = cv2.dilate(fgmask, kernel_dil, iterations=1)
+        return dilation
+
+        return fgmask
+
+    def print_img_info(self, image, title):
+        # print(title)
+        # print(image)
+        # print(image.shape)
+        # print(image.dtype)
+        image_max_value_each_channel = image.reshape(
+            (image.shape[0] * image.shape[1], 3)).max(axis=0)
+        image_min_value_each_channel = image.reshape(
+            (image.shape[0] * image.shape[1], 3)).min(axis=0)
+
+        print("{}, shape: {}, dtype: {}, max (in each channels) value: {}, min value: {}".format(
+            title, image.shape, image.dtype, image_max_value_each_channel, image_min_value_each_channel))
+
     async def get_latest_frame(self):
+        self.f_counter = self.f_counter + 1
         ret, frame = self.cap.read()
+
+        # print("frame shape", frame.shape)
+        # bg_mask = self.get_background_mask_3channel(frame)
+        bg_mask = self.get_background_mask_3channel(frame)
+        ret, thresh1 = cv2.threshold(
+            bg_mask, 128, 255, cv2.THRESH_BINARY)
+
+        alpha = thresh1 / 255
+        # alpha = np.ones(frame.shape, np.uint8)
+        # Force the left side all non-pass
+        # alpha[:, 0:frame.shape[1] // 2] = (0, 0, 0)
+
+        # Force the left side all pass
+        alpha[:, frame.shape[1] // 2:] = (1, 1, 1)
+
+        alpha_unit8 = alpha.astype(np.uint8)
+
+        self.print_img_info(bg_mask, "bg_mask")
+        self.print_img_info(thresh1, "thresh1")
+        self.print_img_info(alpha, "alpha")
+        self.print_img_info(alpha_unit8, "alpha_unit8")
+
+        fg = cv2.multiply(alpha_unit8, frame)
+
+        # fg = cv2.bitwise_and(frame, frame, mask=bg_mask)
+        # fgmask = frame
         await asyncio.sleep(0)
-        return self.rotate(frame)
+
+        if self.f_counter % 50 >= 25:
+            return self.rotate(frame)
+        return self.rotate(fg)
 
     async def get_jpeg_frame(self):
         encode_param = (int(cv2.IMWRITE_JPEG_QUALITY), 90)
         frame = await self.get_latest_frame()
         frame, encimg = cv2.imencode('.jpg', frame, encode_param)
         return encimg.tostring()
+
 
 class PeerConnectionFactory():
     def __init__(self):
@@ -41,8 +117,10 @@ class PeerConnectionFactory():
         self.TURN_SERVER = None
         self.TURN_USERNAME = None
         self.TURN_PASSWORD = None
-        if all(k in os.environ for k in ('STUN_SERVER', 'TURN_SERVER', 'TURN_USERNAME', 'TURN_PASSWORD')):
-            print('WebRTC connections will use your custom ICE Servers (STUN / TURN).')
+        if all(k in os.environ for k in ('STUN_SERVER',
+                                         'TURN_SERVER', 'TURN_USERNAME', 'TURN_PASSWORD')):
+            print(
+                'WebRTC connections will use your custom ICE Servers (STUN / TURN).')
             self.STUN_SERVER = os.environ['STUN_SERVER']
             self.TURN_SERVER = os.environ['TURN_SERVER']
             self.TURN_USERNAME = os.environ['TURN_USERNAME']
@@ -63,7 +141,11 @@ class PeerConnectionFactory():
         if self.TURN_SERVER is not None:
             iceServers = []
             iceServers.append(RTCIceServer(self.STUN_SERVER))
-            iceServers.append(RTCIceServer(self.TURN_SERVER, username=self.TURN_USERNAME, credential=self.TURN_PASSWORD))
+            iceServers.append(
+                RTCIceServer(
+                    self.TURN_SERVER,
+                    username=self.TURN_USERNAME,
+                    credential=self.TURN_PASSWORD))
             return RTCPeerConnection(RTCConfiguration(iceServers))
         return RTCPeerConnection()
 
@@ -85,28 +167,48 @@ class RTCVideoStream(VideoStreamTrack):
         frame.time_base = time_base
         return frame
 
+
 async def index(request):
-    content = open(os.path.join(ROOT, 'client/index.html'), 'r').read()
+    content = open(
+        os.path.join(
+            ROOT,
+            'client/index.html'),
+        'r').read()
     return web.Response(content_type='text/html', text=content)
+
 
 async def stylesheet(request):
     content = open(os.path.join(ROOT, 'client/style.css'), 'r').read()
     return web.Response(content_type='text/css', text=content)
 
+
 async def javascript(request):
     content = open(os.path.join(ROOT, 'client/client.js'), 'r').read()
-    return web.Response(content_type='application/javascript', text=content)
+    return web.Response(
+        content_type='application/javascript', text=content)
+
 
 async def balena(request):
-    content = open(os.path.join(ROOT, 'client/balena-cam.svg'), 'r').read()
+    content = open(
+        os.path.join(
+            ROOT,
+            'client/balena-cam.svg'),
+        'r').read()
     return web.Response(content_type='image/svg+xml', text=content)
 
+
 async def balena_logo(request):
-    content = open(os.path.join(ROOT, 'client/balena-logo.svg'), 'r').read()
+    content = open(
+        os.path.join(
+            ROOT,
+            'client/balena-logo.svg'),
+        'r').read()
     return web.Response(content_type='image/svg+xml', text=content)
+
 
 async def favicon(request):
     return web.FileResponse(os.path.join(ROOT, 'client/favicon.png'))
+
 
 async def offer(request):
     params = await request.json()
@@ -118,6 +220,7 @@ async def offer(request):
     # Add local media
     local_video = RTCVideoStream(camera_device)
     pc.addTrack(local_video)
+
     @pc.on('iceconnectionstatechange')
     async def on_iceconnectionstatechange():
         if pc.iceConnectionState == 'failed':
@@ -133,6 +236,7 @@ async def offer(request):
             'type': pc.localDescription.type
         }))
 
+
 async def mjpeg_handler(request):
     boundary = "frame"
     response = web.StreamResponse(status=200, reason='OK', headers={
@@ -142,16 +246,18 @@ async def mjpeg_handler(request):
     await response.prepare(request)
     while True:
         data = await camera_device.get_jpeg_frame()
-        await asyncio.sleep(0.2) # this means that the maximum FPS is 5
+        # this means that the maximum FPS is 5
+        await asyncio.sleep(0.2)
         await response.write(
             '--{}\r\n'.format(boundary).encode('utf-8'))
         await response.write(b'Content-Type: image/jpeg\r\n')
         await response.write('Content-Length: {}\r\n'.format(
-                len(data)).encode('utf-8'))
+            len(data)).encode('utf-8'))
         await response.write(b"\r\n")
         await response.write(data)
         await response.write(b"\r\n")
     return response
+
 
 async def config(request):
     return web.Response(
@@ -159,13 +265,16 @@ async def config(request):
         text=pc_factory.get_ice_config()
     )
 
+
 async def on_shutdown(app):
     # close peer connections
     coros = [pc.close() for pc in pcs]
     await asyncio.gather(*coros)
 
+
 def checkDeviceReadiness():
-    if not os.path.exists('/dev/video0') and platform.system() == 'Linux':
+    if not os.path.exists(
+            '/dev/video0') and platform.system() == 'Linux':
         print('Video device is not ready')
         print('Trying to load bcm2835-v4l2 driver...')
         os.system('bash -c "modprobe bcm2835-v4l2"')
@@ -174,8 +283,10 @@ def checkDeviceReadiness():
     else:
         print('Video device is ready')
 
+
 if __name__ == '__main__':
     checkDeviceReadiness()
+    print("Camera detected!!!")
 
     ROOT = os.path.dirname(__file__)
     pcs = set()
@@ -185,7 +296,7 @@ if __name__ == '__main__':
     try:
         if os.environ['rotation'] == '1':
             flip = True
-    except:
+    except BaseException:
         pass
 
     auth = []
@@ -194,16 +305,22 @@ if __name__ == '__main__':
         print('Authorization is enabled.')
         print('Your balenaCam is password protected.')
         print('#############################################################\n')
-        auth.append(BasicAuthMiddleware(username = os.environ['username'], password = os.environ['password']))
+        auth.append(
+            BasicAuthMiddleware(
+                username=os.environ['username'],
+                password=os.environ['password']))
     else:
         print('\n#############################################################')
         print('Authorization is disabled.')
         print('Anyone can access your balenaCam, using the device\'s URL!')
-        print('Set the username and password environment variables \nto enable authorization.')
-        print('For more info visit: \nhttps://github.com/balena-io-playground/balena-cam')
+        print(
+            'Set the username and password environment variables \nto enable authorization.')
+        print(
+            'For more info visit: \nhttps://github.com/balena-io-playground/balena-cam')
         print('#############################################################\n')
-    
-    # Factory to create peerConnections depending on the iceServers set by user
+
+    # Factory to create peerConnections depending on the iceServers
+    # set by user
     pc_factory = PeerConnectionFactory()
 
     app = web.Application(middlewares=auth)
