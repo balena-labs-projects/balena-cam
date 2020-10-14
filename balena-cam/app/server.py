@@ -5,6 +5,7 @@ import cv2
 import platform
 import sys
 from time import sleep
+import time
 from aiohttp import web
 from av import VideoFrame
 from aiortc import RTCPeerConnection, RTCSessionDescription, VideoStreamTrack, RTCIceServer, RTCConfiguration
@@ -12,6 +13,29 @@ from aiohttp_basicauth import BasicAuthMiddleware
 import numpy as np
 
 kernel_dil = np.ones((10, 10), np.uint8)
+# reference:
+# https://stackoverflow.com/questions/60989671/white-blue-balance-error-in-high-resolution-with-opencv-and-picamera-v2
+resolution_high = (1920, 1088)
+resoultion_defulat = (640, 480)
+resolution_good = (1280, 704)
+# resolution_nice = (1640, 928)
+resolution_picked = resolution_good
+motion_detected_on = False
+
+
+class FPS():
+    def __init__(self):
+        self.counter = 0
+        self.calculate_frequence = 5  # 5s
+        self.start_time = time.time()
+
+    def per_frame(self):
+        self.counter = self.counter + 1
+        if (time.time() - self.start_time) > self.calculate_frequence:
+            print("FPS: ", self.counter /
+                  (time.time() - self.start_time))
+            self.counter = 0
+            self.start_time = time.time()
 
 
 class CameraDevice():
@@ -22,9 +46,19 @@ class CameraDevice():
         if not ret:
             print('Failed to open default camera. Exiting...')
             sys.exit()
-        self.cap.set(3, 640)
-        self.cap.set(4, 480)
+        # self.cap.set(3, 640)# ?why capture in such small space
+        # self.cap.set(4, 480)
+        # ?why capture in such small space
+        self.cap.set(3, resolution_picked[0])
+        self.cap.set(4, resolution_picked[1])
         self.f_counter = 0
+        self.fps = FPS()
+        print("Cam set to resolution: begin===")
+        print(
+            self.cap.get(cv2.CAP_PROP_FRAME_WIDTH),
+            self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+        )
+        print("===end")
 
     def rotate(self, frame):
         if flip:
@@ -69,6 +103,15 @@ class CameraDevice():
             title, image.shape, image.dtype, image_max_value_each_channel, image_min_value_each_channel))
 
     async def get_latest_frame(self):
+        if motion_detected_on == False:
+            # start_time = time.time()
+            # self.f_counter = self.f_counter + 1
+            # print(self.f_counter)
+            self.fps.per_frame()
+            ret, frame = self.cap.read()
+            await asyncio.sleep(0)
+            return frame
+
         self.f_counter = self.f_counter + 1
         ret, frame = self.cap.read()
 
@@ -194,7 +237,8 @@ async def balena(request):
             ROOT,
             'client/balena-cam.svg'),
         'r').read()
-    return web.Response(content_type='image/svg+xml', text=content)
+    return web.Response(
+        content_type='image/svg+xml', text=content)
 
 
 async def balena_logo(request):
@@ -203,7 +247,8 @@ async def balena_logo(request):
             ROOT,
             'client/balena-logo.svg'),
         'r').read()
-    return web.Response(content_type='image/svg+xml', text=content)
+    return web.Response(
+        content_type='image/svg+xml', text=content)
 
 
 async def favicon(request):
@@ -221,7 +266,7 @@ async def offer(request):
     local_video = RTCVideoStream(camera_device)
     pc.addTrack(local_video)
 
-    @pc.on('iceconnectionstatechange')
+    @ pc.on('iceconnectionstatechange')
     async def on_iceconnectionstatechange():
         if pc.iceConnectionState == 'failed':
             await pc.close()
@@ -247,7 +292,7 @@ async def mjpeg_handler(request):
     while True:
         data = await camera_device.get_jpeg_frame()
         # this means that the maximum FPS is 5
-        await asyncio.sleep(0.2)
+        await asyncio.sleep(0.1)  # ????
         await response.write(
             '--{}\r\n'.format(boundary).encode('utf-8'))
         await response.write(b'Content-Type: image/jpeg\r\n')
