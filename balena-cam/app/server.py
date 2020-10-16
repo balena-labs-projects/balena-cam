@@ -11,16 +11,19 @@ from av import VideoFrame
 from aiortc import RTCPeerConnection, RTCSessionDescription, VideoStreamTrack, RTCIceServer, RTCConfiguration
 from aiohttp_basicauth import BasicAuthMiddleware
 import numpy as np
+from constant.camera import resolution_presets
+# import picamera
 
 kernel_dil = np.ones((10, 10), np.uint8)
 # reference:
 # https://stackoverflow.com/questions/60989671/white-blue-balance-error-in-high-resolution-with-opencv-and-picamera-v2
-resolution_high = (1920, 1088)
-resoultion_defulat = (640, 480)
-resolution_good = (1280, 704)
+# resoultion_defulat = (640, 480)
+# resolution_good = (1280, 704)
+# resolution_high = (1920, 1088)
 # resolution_nice = (1640, 928)
-resolution_picked = resolution_good
+resolution_picked = resolution_presets["picamera"]["default"]
 motion_detected_on = False
+use_picamera = True
 
 
 class FPS():
@@ -39,7 +42,8 @@ class FPS():
 
 
 class CameraDevice():
-    def __init__(self):
+    def __init__(self, resolution_picked):
+        print('Cv2 is used as camera source lib')
         self.cap = cv2.VideoCapture(0)
         self.fgbg = cv2.createBackgroundSubtractorMOG2()
         ret, frame = self.cap.read()
@@ -145,6 +149,38 @@ class CameraDevice():
         if self.f_counter % 50 >= 25:
             return self.rotate(frame)
         return self.rotate(fg)
+
+    async def get_jpeg_frame(self):
+        encode_param = (int(cv2.IMWRITE_JPEG_QUALITY), 90)
+        frame = await self.get_latest_frame()
+        frame, encimg = cv2.imencode('.jpg', frame, encode_param)
+        return encimg.tostring()
+
+
+class PiCameraDevice():
+    def __init__(self, resolution_picked):
+        print('Picamera is used as camera source')
+        # resolution = (640, 480) # fps should be like 15
+        # resolution = (1640, 1232) # has problem
+        # resolution = (1280, 720)
+        # resolution = (1920, 1088) # work for only a period
+        # resolution = (3280, 2464)
+        framerate = 24
+        from utils.pivideostream import PiVideoStream
+        self.stream = PiVideoStream(resolution=resolution_picked,
+                                    framerate=framerate)
+        self.stream.start()
+
+        self.fps = FPS()
+        print("Cam set to resolution: begin===")
+        print(self.stream.camera.resolution
+              )
+        print("===end")
+
+    async def get_latest_frame(self):
+        self.fps.per_frame()
+        frame = self.stream.read()
+        return frame
 
     async def get_jpeg_frame(self):
         encode_param = (int(cv2.IMWRITE_JPEG_QUALITY), 90)
@@ -335,7 +371,10 @@ if __name__ == '__main__':
 
     ROOT = os.path.dirname(__file__)
     pcs = set()
-    camera_device = CameraDevice()
+    if use_picamera == True:
+        camera_device = PiCameraDevice(resolution_picked)
+    else:
+        camera_device = CameraDevice(resolution_picked)
 
     flip = False
     try:
