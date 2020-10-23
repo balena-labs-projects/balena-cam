@@ -1,95 +1,41 @@
-![](./balena-cam/app/client/balena-cam-readme.png)
+![logo](./docs/images/balenaCam-logo.png)
 
-Live stream your balena device's camera feed.
+**Live stream your device's camera feed accessible from anywhere with WebRTC and balena**
 
-## Getting started
+## Highlights
 
-Running this project is as simple as deploying it to a balenaCloud application.
+- **Stream your Pi's camera feed**: Use WebRTC to capture and view your camera feed in a web browser.
+- **Access your stream remotely**: Get a public URL to access your balenaCam feed from anywhere.
+- **Focus on privacy**: Your camera feeds directly from your device to the browser feed-- no third-party camera service required.
 
-One-click deploy to balenaCloud:
+## Setup and configuration
+
+Running this project is as simple as deploying it to a balenaCloud application using our one-click deploy method:
 
 [![](https://balena.io/deploy.png)](https://dashboard.balena-cloud.com/deploy)
 
-**or**
+**Note:** You'll want to start a [free balenaCloud account](https://dashboard.balena-cloud.com/signup) first. Your initial ten devices are fully-featured, free of charge, and don't require a payment method to start. Hack to your heart's content.
 
-- Sign up on [balena.io](https://balena.io/) and follow our [Getting Started Guide](https://balena.io/docs/learn/getting-started).
-- Clone this repository to your local workspace.
-- Unset (delete) the environment variable `BALENA_HOST_CONFIG_gpu_mem` or `RESIN_HOST_CONFIG_gpu_mem` if exists, from the `Fleet Configuration` application side tab.
-- Set these variables in the `Fleet Configuration` application side tab
-  - `BALENA_HOST_CONFIG_start_x` = `1`
-  - Set all the following `gpu_mem` variables so your Pi can autoselect how much memory to allocate for hardware accelerated graphics, based on how much RAM it has available
+## Documentation
 
-    | Key                                  | Value
-    |--------------------------------------|----------
-    |**`BALENA_HOST_CONFIG_gpu_mem_256`**  | **`192`**
-    |**`BALENA_HOST_CONFIG_gpu_mem_512`**  | **`256`**
-    |**`BALENA_HOST_CONFIG_gpu_mem_1024`** | **`448`**
-- Using [Balena CLI](https://www.balena.io/docs/reference/cli/), push the code with `balena push <application-name>`.
-- See the magic happening, your device is getting updated 🌟Over-The-Air🌟!
-- In order for your device to be accessible over the internet, toggle the switch called `PUBLIC DEVICE URL`.
-- Once your device finishes updating, you can watch the live feed by visiting your device's public URL.
+Head over to our [docs](/docs/getting-started) for detailed installation and usage instructions, customization options and more.
 
-### Password Protect your balenaCam device
+## Motivation
 
-To protect your balenaCam devices using a username and a password set the following environment variables.
+We created this open source project to provide a way to stream a camera feed to a browser with privacy in mind. Having read about too many insteances of breached privacy from popular solutions in the market, we built an alternative method that utilizes single-board devices, your own network, and balena tools.
 
-| Key            | Value
-|----------------|---------------------------
-|**`username`**  | **`yourUserNameGoesHere`**
-|**`password`**  | **`yourPasswordGoesHere`**
+balenaCam is lightweight, uses WebRTC, and is designed to be open and adaptable to become a part of other edge or IoT projects where a user needs streaming video for their project.
 
-💡 **Tips:** 💡 
-* You can set them as [fleet environment variables](https://www.balena.io/docs/learn/manage/serv-vars/#fleet-environment-and-service-variables) and every new balenaCam device you add will be password protected.
-* You can set them as [device environment variables](https://www.balena.io/docs/learn/manage/serv-vars/#device-environment-and-service-variables) and the username and password will be different on each device.
+This project is in active development so if you have any feature requests or issues please submit them here on GitHub. PRs are welcome, too.
 
-### Optional Settings
+## Getting Help
 
-- To rotate the camera feed by 180 degrees, add a **device variable**: `rotation` = `1` (More information about this on the [docs](https://www.balena.io/docs/learn/manage/serv-vars/)).
-- To suppress any warnings, add a **device variable**: `PYTHONWARNINGS` = `ignore`
+If you're having any problem, please [raise an issue](https://github.com/balenalabs/balena-cam/issues/new) on GitHub and we will be happy to help.
 
-### TURN server configuration
+## Contributing
 
-
-If you have access to a TURN server and you want your balenaCam devices to use it. You can easily configure it using the following environment variables. When you set them all the app will use that TURN server as a fallback mechanism when a direct WebRTC connection is not possible.
-
-| Key            | Value
-|----------------|---------------------------
-|**`STUN_SERVER`**  | **`stun:stun.l.google.com:19302`**
-|**`TURN_SERVER`**  | **`turn:<yourTURNserverIP>:<yourTURNserverPORT>`**
-|**`TURN_USERNAME`**  | **`<yourTURNserverUsername>`**
-|**`TURN_PASSWORD`**  | **`yourTURNserverPassword`**
-
-## Additional Information
-
-- This project uses [WebRTC](https://webrtc.org/) (a Real-Time Communication protocol).
-- A direct WebRTC connection fails in some cases.
-- This current version uses mjpeg streaming when the webRTC connection fails.
-- Chrome browsers will hide the local IP address from WebRTC, making the page appear but no camera view. To resolve this try the following
-  - Navigate to chrome://flags/#enable-webrtc-hide-local-ips-with-mdns and set it to Disabled
-  - You will need to relaunch Chrome after altering the setting
-- Firefox may also hide local IP address from WebRTC, confirm following in 'config:about'
-  - media.peerconnection.enabled: true
-  - media.peerconnection.ice.obfuscate_host_addresses: false
-
-## Supported Browsers
-
-- **Chrome** (but see note above)
-- **Firefox** (but see note above)
-- **Safari**
-- **Edge** (only mjpeg stream)
-
-## Become a balena poweruser
-
-Want to learn more about what makes balena work? Try one of our [masterclasses](https://www.balena.io/docs/learn/more/masterclasses/overview/). Each lesson is a self-contained, deeply detailed walkthrough on core skills to be successful with your next edge project.
-
-Check them out at our [docs](https://www.balena.io/docs/learn/more/masterclasses/overview/). Also, reach out to us on the [Forums](https://forums.balena.io/) if you need help.
+Do you want to help make balenaCam better? Take a look at our [Contributing Guide]().
 
 ## License
 
-Copyright 2018 Balena Ltd.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
-<http://www.apache.org/licenses/LICENSE-2.0>
-
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+balenaCam is free software, and may be redistributed under the terms specified in the [license](https://github.com/balenalabs/balena-cam/blob/master/LICENSE).
