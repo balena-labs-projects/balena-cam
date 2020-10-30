@@ -1,16 +1,16 @@
 ![logo](./docs/images/balenaCam-logo.png)
 
-**Live stream your device's camera feed accessible from anywhere with WebRTC and balena**
+**Live stream your device's camera feed and access it from anywhere with WebRTC and balena**
 
 ## Highlights
 
 - **Stream your Pi's camera feed**: Use WebRTC to capture and view your camera feed in a web browser.
-- **Access your stream remotely**: Get a public URL to access your balenaCam feed from anywhere.
-- **Focus on privacy**: Your camera feeds directly from your device to the browser feed-- no third-party camera service required.
+- **Access your stream remotely**: Get a public URL to access your balenaCam feed from anywhere with internet access.
+- **Focus on privacy**: Your camera feeds directly from your device to the browser feed-- no third-party camera services or infrastructure required.
 
 ## Setup and configuration
 
-Running this project is as simple as deploying it to a balenaCloud application using our one-click deploy method:
+Start this project by deploying it to a balenaCloud application using our one-click deploy method:
 
 [![](https://balena.io/deploy.png)](https://dashboard.balena-cloud.com/deploy)
 
@@ -22,7 +22,7 @@ Head over to our [docs](/docs/getting-started) for detailed installation and usa
 
 ## Motivation
 
-We created this open source project to provide a way to stream a camera feed to a browser with privacy in mind. Having read about too many insteances of breached privacy from popular solutions in the market, we built an alternative method that utilizes single-board devices, your own network, and balena tools.
+We created this open source project to provide a way to stream a camera feed to a browser with a big focus on privacy. Having read about too many insteances of breached privacy from popular solutions in the market, we built an alternative method that utilizes single-board devices, your own network, and balena's open source tools.
 
 balenaCam is lightweight, uses WebRTC, and is designed to be open and adaptable to become a part of other edge or IoT projects where a user needs streaming video for their project.
 
