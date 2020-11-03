@@ -7,8 +7,16 @@ from aiohttp_basicauth import BasicAuthMiddleware
 
 class CameraDevice():
     def __init__(self):
+
+        self.cascPath = "./client/haarcascade_frontalface_default.xml"  # for face detection
+        self.faceCascade = cv2.CascadeClassifier(self.cascPath)
+
         self.cap = cv2.VideoCapture(0)
         ret, frame = self.cap.read()
+
+        self.mst = cv2.imread('./client/moustache.png')
+        self.bal = cv2.imread('./client/balena.png')
+
         if not ret:
             print('Failed to open default camera. Exiting...')
             sys.exit()
@@ -23,8 +31,46 @@ class CameraDevice():
             frame = cv2.warpAffine(frame, M, (w, h))
         return frame
 
+    def put_moustache(self,mst,fc,x,y,w,h):
+
+        face_width = w
+        face_height = h
+
+        mst_width = int(face_width*0.4166666)+1
+        mst_height = int(face_height*0.142857)+1
+        dim = (mst_width,mst_height)
+
+        mst = cv2.resize(mst,dim, cv2.INTER_AREA)
+
+        for i in range(int(0.62857142857*face_height),int(0.62857142857*face_height)+mst_height):
+            for j in range(int(0.29166666666*face_width),int(0.29166666666*face_width)+mst_width):
+                for k in range(3):
+                    if mst[i-int(0.62857142857*face_height)][j-int(0.29166666666*face_width)][k] <235:
+                        fc[y+i][x+j][k] = mst[i-int(0.62857142857*face_height)][j-int(0.29166666666*face_width)][k]
+        return fc
+
+
     async def get_latest_frame(self):
         ret, frame = self.cap.read()
+
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        
+        #https://github.com/kunalgupta777/OpenCV-Face-Filters/blob/master/filters.py
+        #https://docs.opencv.org/3.1.0/d7/d8b/tutorial_py_face_detection.html#gsc.tab=0
+
+        faces = self.faceCascade.detectMultiScale(
+            gray,
+            scaleFactor=1.1,
+            minNeighbors=5,
+            minSize=(40,40)
+        )
+
+        for (x, y, w, h) in faces:
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+            #cv2.putText(frame,"Person Detected",(x,y),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
+            frame = self.put_moustache(self.mst,frame,x,y,w,h)
+ 
+
         await asyncio.sleep(0)
         return self.rotate(frame)
 

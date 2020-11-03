@@ -12,6 +12,20 @@
   -ms-transform: translateZ(0);
   transform: translateZ(0);
 }
+
+.overlay-pattern {
+  content: "";
+  background: url('./bats.png') repeat;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: 2;
+  opacity: 0.2;
+}
+
+
 @-webkit-keyframes load5 {
   0%,
   100% {
