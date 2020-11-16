@@ -16,6 +16,7 @@ class CameraDevice():
 
         self.mst = cv2.imread('./client/moustache.png')
         self.bal = cv2.imread('./client/balena.png')
+        self.santa = cv2.imread('./client/santahat3.png')
 
         if not ret:
             print('Failed to open default camera. Exiting...')
@@ -49,6 +50,24 @@ class CameraDevice():
                         fc[y+i][x+j][k] = mst[i-int(0.62857142857*face_height)][j-int(0.29166666666*face_width)][k]
         return fc
 
+    def put_santa_hat(hat,fc,x,y,w,h):
+    
+        face_width = w
+        face_height = h
+        
+        hat_width = face_width+1
+        hat_height = int(0.35*face_height)+1
+        
+        hat = cv2.resize(hat,(hat_width,hat_height))
+        
+        for i in range(hat_height):
+            for j in range(hat_width):
+                for k in range(3):
+                    if hat[i][j][k]<235:
+                        fc[y+i-int(0.25*face_height)][x+j][k] = hat[i][j][k]
+        return fc
+
+
 
     async def get_latest_frame(self):
         ret, frame = self.cap.read()
@@ -57,6 +76,7 @@ class CameraDevice():
         
         #https://github.com/kunalgupta777/OpenCV-Face-Filters/blob/master/filters.py
         #https://docs.opencv.org/3.1.0/d7/d8b/tutorial_py_face_detection.html#gsc.tab=0
+        #https://www.bogotobogo.com/python/OpenCV_Python/python_opencv3_Image_Object_Detection_Face_Detection_Haar_Cascade_Classifiers.php
 
         faces = self.faceCascade.detectMultiScale(
             gray,
@@ -68,8 +88,9 @@ class CameraDevice():
         for (x, y, w, h) in faces:
             cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
             #cv2.putText(frame,"Person Detected",(x,y),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
-            frame = self.put_moustache(self.mst,frame,x,y,w,h)
- 
+            #frame = self.put_moustache(self.mst,frame,x,y,w,h)
+            frame = self.put_santa_hat(self.santa,frame,x,y,w,h)
+
 
         await asyncio.sleep(0)
         return self.rotate(frame)
