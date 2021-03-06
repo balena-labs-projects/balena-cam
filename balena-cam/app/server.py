@@ -3,6 +3,7 @@ from time import sleep
 from aiohttp import web
 from av import VideoFrame
 from aiortc import RTCPeerConnection, RTCSessionDescription, VideoStreamTrack, RTCIceServer, RTCConfiguration
+from aiortc.mediastreams import MediaStreamError
 from aiohttp_basicauth import BasicAuthMiddleware
 
 class CameraDevice():
@@ -78,6 +79,8 @@ class RTCVideoStream(VideoStreamTrack):
         self.data_bgr = None
 
     async def recv(self):
+        if self.readyState != "live":
+            raise MediaStreamError
         self.data_bgr = await self.camera_device.get_latest_frame()
         frame = VideoFrame.from_ndarray(self.data_bgr, format='bgr24')
         pts, time_base = await self.next_timestamp()
@@ -118,9 +121,9 @@ async def offer(request):
     # Add local media
     local_video = RTCVideoStream(camera_device)
     pc.addTrack(local_video)
-    @pc.on('iceconnectionstatechange')
-    async def on_iceconnectionstatechange():
-        if pc.iceConnectionState == 'failed':
+    @pc.on("connectionstatechange")
+    async def on_connectionstatechange():
+        if pc.connectionState == "failed":
             await pc.close()
             pcs.discard(pc)
     await pc.setRemoteDescription(offer)
