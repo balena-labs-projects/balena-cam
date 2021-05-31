@@ -67,7 +67,7 @@ If you have access to a TURN server and you want your balenaCam devices to use i
 - Chrome browsers will hide the local IP address from WebRTC, making the page appear but no camera view. To resolve this try the following
   - Navigate to chrome://flags/#enable-webrtc-hide-local-ips-with-mdns and set it to Disabled
   - You will need to relaunch Chrome after altering the setting
-- Firefox may also hide local IP address from WebRTC, confirm following in 'config:about'
+- Firefox may also hide local IP address from WebRTC, confirm following in 'about:config'
   - media.peerconnection.enabled: true
   - media.peerconnection.ice.obfuscate_host_addresses: false
 
