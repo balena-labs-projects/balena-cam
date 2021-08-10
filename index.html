@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>balenaCam</title>
+  <link rel="shortcut icon" href="favicon.png">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+  <script src="webrtcstreamer.json" ></script>
+<script src="webrtcstreamer.js" ></script>
+<script>
+    
+        // ------------------------------------------
+        // WebRTC connections
+        // ------------------------------------------
+        var webRtcServerList = {};
+
+        // ------------------------------------------
+        // decode URL arguments
+        // ------------------------------------------
+        var argurl = { video:location.search.slice(1) };
+        var argoptions = null;
+        var layout = null;
+        if (typeof URLSearchParams != 'undefined') {
+                var params = new URLSearchParams(location.search);
+                argurl = { video:params.get("video"), audio:params.get("audio") };
+                argoptions = params.get("options");
+                if (!argoptions) {
+                        argoptions = webrtcConfig.options; 
+                }
+                layout = params.get("layout");
+        } else {
+                console.log("URLSearchParams not supported then no argument could be used");
+        }
+
+        // ------------------------------------------
+        // get text from url object (video,audio)
+        // ------------------------------------------
+        function getText(url) {
+                var text;
+                if (url.video) {
+                        text = url.video + " ";
+                }
+                if (url.audio && (url.audio != url.video)) {
+                        text += url.audio + " ";
+                }
+                return text;
+        }
+
+        // ------------------------------------------
+        // get the div where to insert a video
+        // ------------------------------------------
+        function getContentDiv() {
+                var contentDiv = null;
+                if (document.getElementById("layout")) {
+                        var divList = document.getElementsByTagName("div");
+                        for (var i=0; i<divList.length; i++) {
+                                if (divList[i].childNodes.length == 0) {
+                                        contentDiv = divList[i];
+                                        break;
+                                }
+                        }
+                } else {
+                        contentDiv = document.getElementById("content");
+                }
+                return contentDiv;
+        }
+
+        // ------------------------------------------
+        // init device list 
+        // ------------------------------------------
+        function onGetDeviceList(remoteDeviceList) {
+                var deviceList = [];
+                if (argurl.video || argurl.audio) {
+                        deviceList.push( argurl );
+                }
+                if (remoteDeviceList) {
+                        deviceList.push.apply( deviceList, remoteDeviceList );
+                }
+
+                // create navigation menu
+                var urllist = document.getElementById("menu");
+                for (var dev in deviceList) {
+                        var url = deviceList[dev];
+                        var option = document.createElement("a");
+                        var videoTag = "video_" + JSON.stringify(url);
+                        option.url = url;
+                        option.text = getText(url);
+                        option.id   = "nav_" + videoTag;
+                        option.onclick = function () { 
+                                if (this.className === "active") {
+                                        del(this.url); 
+                                } else {
+                                        add(this.url); 
+                                }
+                        }
+                        // urllist.appendChild(option);
+                }
+
+                if (argurl.video || argurl.audio) {
+                        add(argurl);
+                } else {
+                var nbVideos = 1;
+                if (layout) {
+                        var splitLayout = layout.split("x");
+                        var nbrow = parseInt(splitLayout[0]);
+                        var nbcol = parseInt(splitLayout[1]);
+                        nbVideos = nbrow*nbcol;
+                }
+                var random = deviceList.sort(() => .5 - Math.random()).slice(0,nbVideos);
+                random.forEach((stream) => {
+                        add(stream);
+                });
+                }
+        }
+
+        // ------------------------------------------
+        // Fill version
+        // ------------------------------------------
+        function onVersion(version) {
+                document.getElementById("footer-rtc").innerHTML = "<a href='https://github.com/mpromonet/webrtc-streamer'>WebRTC-Streamer</a>"
+                                                        + " " + version.split(" ")[0];
+        }
+
+        // ------------------------------------------
+        // add a webrtc client connection
+        // ------------------------------------------
+        function del(url) {
+                var videoTag = "video_" + JSON.stringify(url);
+
+                // disconnect webrtc connection
+                var webrtcServer = webRtcServerList[videoTag];
+                if (webrtcServer) {
+                        webrtcServer.disconnect();
+                        webRtcServerList[videoTag] = undefined;
+                }
+
+                // remove the video element and its tile
+                var divElt =    document.getElementById ("div_" + videoTag);
+                divElt.parentElement.removeChild(divElt);
+
+                // unhighlight the navigation
+                var navElt =    document.getElementById ("nav_" + videoTag);
+                navElt.className = "";
+        }
+
+        // ------------------------------------------
+        // add a webrtc client connection
+        // ------------------------------------------
+        function add(url) {
+                var videoTag = "video_" + JSON.stringify(url);
+
+                // add a video element to display webrtc stream
+                if (document.getElementById (videoTag) === null) {
+                        var contentDiv = getContentDiv();
+                        if (contentDiv) {
+                                let webstreamurl = webrtcConfig.url + "/webrtcstreamer.html?";
+                                if (url.video) {
+                                        webstreamurl += "video=" + encodeURIComponent(url.video) + "&";
+                                }
+                                if (url.audio) {
+                                        webstreamurl += "audio=" + encodeURIComponent(url.audio) + "&";
+                                }
+                                if (argoptions) {
+                                        webstreamurl += "options=" + encodeURIComponent(argoptions) + "&";
+                                }
+                                var divelt = document.createElement("div");
+                                divelt.id = "div_" + videoTag
+                                var nameelt = document.createElement("h2");
+                                nameelt.id = "title_" + videoTag
+                                // nameelt.innerHTML = "<a href='" + webstreamurl +"' >"+getText(url)+"</a>";
+                                var inputlt = document.getElementById("vidin");
+                                inputlt.innerHTML = "<br />Input source: " + getText(url);
+                                divelt.appendChild(nameelt);
+                                var videoelt = document.createElement("video");
+                                videoelt.id = videoTag;
+                                videoelt.title = getText(url);
+                                videoelt.muted = true;
+                                videoelt.controls = true;
+                                videoelt.playsinline = true;
+                                if (layout) {
+                                        var splitLayout = layout.split("x");
+                                        var nbrow = parseInt(splitLayout[0]);
+                                        var nbcol = parseInt(splitLayout[1]);
+                                        videoelt.width =  window.innerWidth / (nbcol+1)
+                                        videoelt.height =  window.innerHeight / (nbrow+1) 
+                                }
+                                divelt.appendChild(videoelt);
+                                contentDiv.appendChild(divelt);
+                        }
+                }
+
+                var videoelt =  document.getElementById (videoTag);
+                if (videoelt) {
+                        // connect video element to webrtc stream
+                        var webRtcServer = new WebRtcStreamer(videoTag, webrtcConfig.url);
+
+                        var options = argoptions;
+                        if (layout) {
+                                options += webrtcConfig.layoutextraoptions;
+                        }
+
+                        webRtcServer.connect(url.video, url.audio, options);
+
+                        // highlight the navigation 
+                        // var navElt =         document.getElementById ("nav_" + videoTag);
+                        // navElt.className = "active";
+
+                        // register webrtc streamer connection
+                        webRtcServerList[videoTag] = webRtcServer;
+                }
+        }
+
+        // ------------------------------------------
+        // load/unload callbacks
+        // ------------------------------------------
+        window.onload         = function() { 
+                if (layout) {
+                        var splitLayout = layout.split("x");
+                        var nbrow = parseInt(splitLayout[0]);
+                        var nbcol = parseInt(splitLayout[1]);
+                        const layoutElement = document.createElement("div")
+                        layoutElement.id = "layout"
+                        layoutElement.style.display= "grid"
+                        layoutElement.style.gridTemplateColumns= `repeat(${nbcol}, 1fr)`
+                        for (var irow=0; irow<nbrow; irow++) {
+                                for (var icol=0; icol<nbcol; icol++) {
+                                        const divElement = document.createElement("div")
+                                        divElement.id = "cell_" + irow + "_" + icol
+                                        divElement.style.width = "1fr"
+                                        divElement.style.height = "1fr"
+                                        layoutElement.appendChild(divElement);
+                                }
+                        }
+                        let content = document.getElementById("content")
+                        content.appendChild(layoutElement)
+                }
+
+                fetch(webrtcConfig.url + "/api/getMediaList")
+                        .then( (response) => response.json() ) 
+                        .then( (response) => onGetDeviceList( response ))
+
+                fetch(webrtcConfig.url + "/api/version")
+                        .then( (response) => response.json() ) 
+                        .then( (response) => onVersion( response ))
+
+        } 
+        window.onbeforeunload = function() { 
+                for (var url in webRtcServerList) { 
+                        webRtcServerList[url].disconnect() 
+                } 
+        };
+</script>
+</head>
+
+<body>
+
+  <div class="header">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#"><img style="width: 13rem; height: auto;" src="./balena-cam.svg"></a>
+        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#collapsibleNavbar" aria-expanded="false">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse" id="collapsibleNavbar">
+          <ul class="navbar-nav ml-auto">
+            <li id="webrtc" class="nav-item indicator">
+              Connection over WebRTC
+            </li>
+            <li id="vpn" class="nav-item indicator">
+              Connection over BalenaVPN
+            </li>
+            <li class="nav-item navbar-brand">
+              <a class="nav-link active" href="https://github.com/balenalabs/balena-cam">
+                <i class="fa fa-github" style="font-size: 150%"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+
+    <div id="video-container" class="container">
+      <div class="d-flex justify-content-center align-items-center flex-column">
+        <div class="p5 embed-responsive embed-responsive-16by9 position-relative">
+         
+         <div id="content"></div>  
+        </div>
+        <span id="vidin"></span>
+        <div id="fullscreen-info-1" class="text-center">
+          <h6 >
+            Double tap the video to enter fullscreen mode!
+          </h6>
+        </div>
+      </div>
+    </div>
+
+    <div id="mjpeg-container" class="container">
+      <div class="d-flex justify-content-center align-items-center flex-column">
+        <div id="mjpeg" class="d-flex justify-content-center align-items-center" ondblclick="fullscreen(2)" onmouseover="showFullscreenMessage()">
+        </div>
+        <div id="fullscreen-info-2" class="text-center">
+          <h6>
+            Double tap the video to enter fullscreen mode!
+          </h6>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer id="footer" class="footer">
+    <div class="container">
+      <p style="float: left;">An open source project by
+        <a href="https://www.balena.io/" > <img style="width: 6rem; height: auto;" src="./balena-logo.svg"> </a>
+      </p>
+      <p style="float: right;">Powered by <span id="footer-rtc"></span></p>
+    </div>
+    <div style="clear: both;"></div>
+  </footer>
+
+<br /><br />
+<nav id="menu"></nav>
+  
+  <script>
+      document.getElementById('video-container').style.display = 'block';
+      document.getElementById('webrtc').style.display = 'initial';
+  </script> 
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+</body>
+</html>
