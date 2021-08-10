@@ -1,6 +1,6 @@
 name: balenaCam
 type: sw.application
-description: Network Camera with Raspberry Pi and WebRTC.
+description: Turn your device into a network camera with WebRTC.
 assets:
   repository:
     type: blob.asset
