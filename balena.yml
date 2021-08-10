@@ -11,11 +11,6 @@ assets:
     data:
       url: 'https://raw.githubusercontent.com/balenalabs/balena-cam/master/logo.png'
 data:
-  applicationConfigVariables:
-    - BALENA_HOST_CONFIG_start_x: 1
-    - BALENA_HOST_CONFIG_gpu_mem_256: 192
-    - BALENA_HOST_CONFIG_gpu_mem_512: 256
-    - BALENA_HOST_CONFIG_gpu_mem_1024: 448
   defaultDeviceType: raspberrypi3
   supportedDeviceTypes:
     - raspberrypi3
