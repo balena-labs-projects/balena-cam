@@ -25,15 +25,12 @@ One-click deploy to balenaCloud:
 - This current version uses our capture and streaming block - see these projects for more setup options!
 - A direct WebRTC connection fails in some cases.
 - This current version does not use mjpeg streaming when the webRTC connection fails.
+- This version of balenaCam offers wider browser support without the need for any specific browser settings.
 - If you want mjpeg fallback, password protection or camera flip, check out the previous version of balenaCam
 
 ### TURN server configuration
 
 If you have access to a TURN server and you want your balenaCam devices to use it, check out the setup options in the [streaming block].
-
-## Supported Browsers
-
-This version of balenaCam offers wider browser support without the need for any specific browser settings.
 
 ## Become a balena poweruser
 
