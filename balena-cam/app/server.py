@@ -4,6 +4,9 @@ from aiohttp import web
 from av import VideoFrame
 from aiortc import RTCPeerConnection, RTCSessionDescription, VideoStreamTrack, RTCIceServer, RTCConfiguration
 from aiohttp_basicauth import BasicAuthMiddleware
+from timelapse.main import tick
+import schedule
+import logging
 
 class CameraDevice():
     def __init__(self):
@@ -175,6 +178,14 @@ def checkDeviceReadiness():
         print('Video device is ready')
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
+    if os.environ.get("TIMELAPSE", ""):
+        logging.info("Starting timelapse mode")
+        schedule.every(3).minutes.do(tick)
+        while True:
+            schedule.run_pending()
+            sleep(1)
+
     checkDeviceReadiness()
 
     ROOT = os.path.dirname(__file__)
