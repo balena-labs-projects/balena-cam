@@ -17,7 +17,11 @@ PHOTO_JPG_CMD = [
     "--rotation",
     "180",
     "--quality",
-    "90",
+    "95",
+    "--width",
+    "1440",
+    "--height",
+    "1080",
 ]
 
 S3_BUCKET = os.getenv("S3_BUCKET", "no_bucket")
