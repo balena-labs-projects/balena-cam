@@ -3,6 +3,11 @@ import io
 import logging
 import os
 import subprocess
+from suntime import Sun
+
+LATITUDE = float(os.environ.get("LATITUDE", 52.25))
+LONGITUDE = float(os.environ.get("LONGITUDE", 0.11))
+SUN = Sun(LATITUDE, LONGITUDE)
 
 import boto3
 import schedule
@@ -40,12 +45,12 @@ def upload_to_s3(data, captured_at, s3_bucket=S3_BUCKET):
     s3.upload_fileobj(io.BytesIO(data), s3_bucket, s3_key)
 
 
-def tick():
-    now = dt.datetime.now()
+def tick(source=dt.datetime.now):
+    now = source(tz=dt.timezone.utc)
     logging.info("Tick at %s", now)
-    earliest = dt.time(5, 30)
-    latest = dt.time(19, 0)
-    if now.time() >= earliest and now.time() <= latest:
+    earliest = SUN.get_local_sunrise_time(now.date()) - dt.timedelta(minutes=15)
+    latest = SUN.get_local_sunset_time(now.date()) + dt.timedelta(minutes=15)
+    if now >= earliest and now <= latest:
         result, when = take_a_photo()
         upload_to_s3(data=result.stdout, captured_at=when)
     else:
