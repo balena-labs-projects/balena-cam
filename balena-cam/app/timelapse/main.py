@@ -49,7 +49,7 @@ def tick(source=dt.datetime.now):
     now = source(tz=dt.timezone.utc)
     logging.info("Tick at %s", now)
     earliest = SUN.get_local_sunrise_time(now.date()) - dt.timedelta(minutes=15)
-    latest = SUN.get_local_sunset_time(now.date()) + dt.timedelta(minutes=15)
+    latest = SUN.get_local_sunset_time(now.date()) + dt.timedelta(minutes=45)
     if now >= earliest and now <= latest:
         result, when = take_a_photo()
         upload_to_s3(data=result.stdout, captured_at=when)
