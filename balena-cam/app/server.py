@@ -217,4 +217,4 @@ if __name__ == '__main__':
     app.router.add_post('/offer', offer)
     app.router.add_get('/mjpeg', mjpeg_handler)
     app.router.add_get('/ice-config', config)
-    web.run_app(app, port=80)
+    web.run_app(app, port=8080)
