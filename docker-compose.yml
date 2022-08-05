@@ -7,3 +7,13 @@ services:
                 network_mode: "host"
                 labels:
                         io.balena.features.kernel-modules: '1'
+                        
+        wifi-connect:
+                build: ./wifi-connect
+                network_mode: "host"
+                labels:
+                        io.balena.features.dbus: '1'
+                cap_add:
+                        - NET_ADMIN
+                environment:
+                        DBUS_SYSTEM_BUS_ADDRESS: "unix:path=/host/run/dbus/system_bus_socket"
