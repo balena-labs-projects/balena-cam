@@ -1,0 +1,1227 @@
+- commits:
+    - subject: Updating references from balenalabs to balena-labs-projects
+      hash: f5d16e6f4764e9d82579f26d01e4a0b941de835e
+      body: ""
+      footer:
+        Signed-off-by: Flynn Joffray <flynn@balena.io>
+        signed-off-by: Flynn Joffray <flynn@balena.io>
+        Change-type: patch
+        change-type: patch
+      author: Flynn Joffray
+      nested: []
+  version: 0.2.10
+  title: ""
+  date: 2022-11-16T20:28:22.366Z
+- version: 0.2.9
+  date: 2022-03-29T12:02:56Z
+  commits:
+    - hash: de42d41d4911d3821ba2d31522356716f3018b41
+      author: Richard Morrison
+      footers:
+        change-type: patch
+      subject: "Improving the code: Pin pyee to version 8.2.2"
+      body: Versions of pyee newer than 9.0 no longer support python3.5
+- version: 0.2.8
+- date: 2022-03-28T18:40:13Z
+- commits:
+    - hash: 4859b5b5ddb1fd8390a282ea00950acc3f2bc907
+- commits:
+    - author: Alan Boris
+- commits:
+    - subject: "patch: add CONTRIBUTING.md"
+- commits:
+    - body: null
+- version: 0.2.7
+- date: 2021-08-09T18:04:03Z
+- commits:
+    - hash: e36be2e32aa41af1c15a516c0f74fb71271434ac
+- commits:
+    - author: Alan Boris
+- commits:
+    - subject: "patch: updated verbiage"
+- commits:
+    - body: null
+- version: 0.2.6
+- date: 2021-02-10T14:49:34Z
+- commits:
+    - hash: fa94c8a216cbc30ccc673661c79b87b6d6162397
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "meta: update balena.yml"
+- commits:
+    - body: null
+- version: 0.2.5
+- date: 2020-07-14T09:32:46Z
+- commits:
+    - hash: 9c86c1e471a1846c1cee6b4721c1e9d0fab1bd68
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "Dockerfile: Lock av to v6.1.0"
+- commits:
+    - body: null
+- version: 0.2.4
+- date: 2020-07-14T09:27:26Z
+- commits:
+    - hash: f4e6cabb5b104ccfd0a425a5579a28944e12ce0f
+- commits:
+    - author: andrewnhem
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Andrew Nhem <andrewn@balena.io>
+- commits:
+    - subject: Adding masterclass link to readme
+- commits:
+    - body: Adds link to masterclasses into balenaCam readme.
+- commits:
+    - hash: 630bf2c1a27a773e19ec7b52c6279a5b91e955e7
+- commits:
+    - author: HughWarrington
+- commits:
+    - subject: Simplify Chrome-specific instructions in README.md
+- commits:
+    - body: "Provide a direct link to the flag which needs to be altered.\r
+
+        \r
+
+        Remove sentence about Chrome 'media' settings. This appears to
+        no longer exist."
+- version: 0.2.3
+- date: 2020-05-28T12:39:22Z
+- commits:
+    - hash: f889ef47d7dec26574e18b85cb871310ee769f3b
+- commits:
+    - author: zane
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: zane <zane@ugh.cloud>
+- commits:
+    - subject: "README: Add instructions to disable IP hiding in firefox"
+- commits:
+    - body: null
+- version: 0.2.2
+- date: 2020-04-30T12:20:32Z
+- commits:
+    - hash: 449c332f6021c760a9b1e51ec0864677fc3470ff
+- commits:
+    - author: Stevche Radevski
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Stevche Radevski <stevche@balena.io>
+- commits:
+    - subject: Add a "deploy to balena" button
+- commits:
+    - body: null
+- version: 0.2.1
+- date: 2020-04-30T12:10:05Z
+- commits:
+    - hash: 4c433fd2567d4a07c2591cce24f45a074d4634d8
+- commits:
+    - author: Ryan White
+- commits:
+    - footers:
+        connects-to: "#58"
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Ryan White <ry.white@gmail.com>
+- commits:
+    - subject: "Dockerfile: Added new 64-bit architecture for pi 4s"
+- commits:
+    - body: null
+- version: 0.2.0
+- date: 2020-04-14T13:47:42Z
+- commits:
+    - hash: 0efb425a60a4d7e9286ef476cb4076d5bd43dbcf
+- commits:
+    - author: Paul Allsopp
+- commits:
+    - footers:
+        change-type: minor
+- commits:
+    - footers:
+        signed-off-by: Paul Allsopp pallsopp@gmail.com
+- commits:
+    - subject: "README: Add instruction to disable IP hiding in chrome."
+- commits:
+    - body: null
+- version: 0.1.1
+- date: 2020-03-05T09:13:54Z
+- commits:
+    - hash: 664a20423710e6579a4b159e2ef94893da6f81ad
+- commits:
+    - author: Daniel Stenberg
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Daniel Stenberg <daniel.stenberg87@outlook.com>
+- commits:
+    - subject: "Server: Multipart content type boundary compliance with RFC 1341"
+- commits:
+    - body: null
+- version: 0.1.0
+- date: 2020-03-02T09:51:20Z
+- commits:
+    - hash: 54c7397ef9861c3bf16bc5a26d57d8d064786cac
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        connects-to: "#59"
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "Dockerfile: Pin aioice version to 0.6.10"
+- commits:
+    - body: Re-enable checkDeviceReadiness
+- commits:
+    - hash: 0f663ff584bbc9122ca15da9a5077c4beb250fd2
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "repo: Add repo.yml"
+- commits:
+    - body: null
+- commits:
+    - hash: 77f228289b425f59d59476630ca0575e8501092a
+- commits:
+    - author: Daniel Stenberg
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Daniel Stenberg <daniel.stenberg87@outlook.com>
+- commits:
+    - subject: "Dockerfile: Copy source after installing pip packages"
+- commits:
+    - body: null
+- commits:
+    - hash: e263ba67923073f6ab63b5db470310f65814c0fb
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "Dockerfile: Use pinned base image for python 3.5"
+- commits:
+    - body: null
+- commits:
+    - hash: 488d7d5dfc1a641a7c0b7529de90b16926bd4108
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: Change base image to stretch, install python from apt
+- commits:
+    - body: null
+- commits:
+    - hash: ddf6acd6ef3c88dd9e4886a612dd3de6318c4507
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: Stop checking the existance of the bcm2835 module, use default capture
+        device
+- commits:
+    - body: Check if we can grab a frame from the default device
+- commits:
+    - hash: a7a107f187e8750b47c82c8cd83c7cc6aa7965d4
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        connects-to: "#40"
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: Use aiohttp-basicauth version 0.1.3
+- commits:
+    - body: null
+- commits:
+    - hash: d7749479be52ef0a08a25b265260a5c5a249cf4e
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "README: Add step to uset any gpu_mem vars if they exist before setting
+        the new ones"
+- commits:
+    - body: null
+- commits:
+    - hash: 0a94b3f1c2643a20bce093561f12c7ef9afae774
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "Dockerfile: Fix missing libjasper-dev package"
+- commits:
+    - body: null
+- commits:
+    - hash: ce9c9b7017c9b604a9c50c64125e0f6b726e87b4
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "app: Add TURN server support"
+- commits:
+    - body: |-
+        To enable the use of the TURN server set the following env vars:
+        STUN_SERVER
+        TURN_SERVER
+        TURN_USERNAME
+        TURN_PASSWORD
+- commits:
+    - hash: 417f12b9548ff7e7b692c4e45b2a7017f5d8c423
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "client: Start MJPEG streaming on unexpected errors"
+- commits:
+    - body: null
+- commits:
+    - hash: 6b43ae022965f254cf6dba5d9d6364c96ab82f59
+- commits:
+    - author: Chris Crocker-White
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Chris Crocker-White <chriscw@balena.io>
+- commits:
+    - subject: Testing canvas for MJPEG stream
+- commits:
+    - body: null
+- commits:
+    - hash: 6534a4d93d3aec5b6d247b3bbe7c628f730b8bb5
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        connects-to: "#35"
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: Create canvas and mjpeg elements when startMJPEG function triggers
+- commits:
+    - body: null
+- commits:
+    - hash: 8222c05405f03f330f7347a11eae3196c06b113f
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: Add instructions on how to set up TURN server configuration
+- commits:
+    - body: null
+- commits:
+    - hash: 8c19e5b182b9c742a8e4274c54ab9d3cfddbdfce
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        connects-to: "#34"
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: Use mjpeg streaming if browser is safari on ios
+- commits:
+    - body: null
+- commits:
+    - hash: 4d57d0f460d65de93e60524c883277e8e20a4580
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - subject: "app: Add authorization method"
+- commits:
+    - body: null
+- commits:
+    - hash: 56d4c70618ad547472d14d9e221516ef04ffa0cf
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "README: Update README with instructions about setting username and
+        password"
+- commits:
+    - body: null
+- commits:
+    - hash: 30f886ee293ae0e5de0b15c57c698b5fd6053b38
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "README: Add gpu_mem var table"
+- commits:
+    - body: null
+- commits:
+    - hash: a82200e686881ce776011096281e5dc56fb3be04
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "README: Add safari and edge on the browser support section, add
+        installation info for the pizerow"
+- commits:
+    - body: null
+- commits:
+    - hash: 2eb1ffb6826ad98527253988c7cdbb39dda30779
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "app: Remove unused benchmarks and old start script"
+- commits:
+    - body: null
+- commits:
+    - hash: babbef8345c5b820a81156b7ad7bc7f7beeb9f8c
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "server: Remove try catch statement on mjpeg handler"
+- commits:
+    - body: null
+- commits:
+    - hash: 7a450a37af6ca54db023b76945bdcb971dff2ea3
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "client: Use getReceivers method to attach video stream to video element"
+- commits:
+    - body: null
+- commits:
+    - hash: 1eaf8207c5da047e361e2ff18ffaffcda1ccea83
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "client: If browser is Edge start MJPEG streaming immediately"
+- commits:
+    - body: null
+- commits:
+    - hash: 147735ba29d2a722e935532bc8c488f4c670bbfc
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "app: Check if camera device is ready, if not load the bcm2835 module"
+- commits:
+    - body: null
+- commits:
+    - hash: 8a8621e4f857e6664516c4cfab72a736f39826f5
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "app: Exit after loading the camera module"
+- commits:
+    - body: null
+- commits:
+    - hash: d79af9df1695ba928d351b3bb9cc03f13934e8e6
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "client: Make UI more mobile friendly"
+- commits:
+    - body: null
+- commits:
+    - hash: d1e0645f2478f764c63534b945057a30fe2812a0
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "client: Show info message about fullscreen on hover, trigger
+        fullscreen accordingly"
+- commits:
+    - body: null
+- commits:
+    - hash: 1c0bbba6e3b35f4792d9520d64e865e04eb35be2
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "client: Add favicon"
+- commits:
+    - body: null
+- commits:
+    - hash: ebf17457cbe72c74d20177ce66d4a2476c07de39
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "app: Change base image, remove unnecessary packages and files, set"
+- commits:
+    - body: server's listening port to 80
+- commits:
+    - hash: 91cbbd29f3544aef86ea3bf1618fe30015061e56
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "client: Refactor client"
+- commits:
+    - body: null
+- commits:
+    - hash: a2cd075f8c85e2d3b24cdcd31486549fc061c962
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "client: Refactor client negotiate and createPeerConnection to one
+        function, set global intervalId for video freeze detection"
+- commits:
+    - body: null
+- commits:
+    - hash: 8d52704aee348a0bd102467cdec31b18b7fceb50
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "client: Transparently reconnect when video freezes"
+- commits:
+    - body: null
+- commits:
+    - hash: ca24c390925fc8ca3bf16f333665c19736364bae
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "server: Refactor server components"
+- commits:
+    - body: null
+- commits:
+    - hash: 06e22e503b034b337ce99c84491acf7e88055e03
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "server: Use run_in_executor to get the frames from cv2"
+- commits:
+    - body: null
+- commits:
+    - hash: 35954ab11d8f23888d7dba6adcbed33ff89f6ac9
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "client: Periodically check for the connection status after reconnection"
+- commits:
+    - body: null
+- commits:
+    - hash: 5ab3d36d819cace75a38a405fe5a45711f4f5681
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - subject: "server: Rotate video if env var rotation=1"
+- commits:
+    - body: null
+- commits:
+    - hash: 8a810f214315a921574070b803182803bf289f91
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "server: Make rotate function, camera device's method"
+- commits:
+    - body: null
+- commits:
+    - hash: 7cd01b07f211447be6d7af8c5b5f437e28639fd5
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "app: Implement fallback mechanism when webRTC fails"
+- commits:
+    - body: null
+- commits:
+    - hash: d302fd8dd925d0eed825c9e44d5b6f30835147a1
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "client: Change app states and refactor showContainer function"
+- commits:
+    - body: >-
+        INFO: a. When rtcConnection can be established state goes from 0 -> 1
+
+        b. When rtcConnection can NOT be established state goes from 0 -> 2 and HTTP streaming starts
+- commits:
+    - hash: fd41eee180a3f917eca6432d32b668b9f42e2496
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "README: Update README"
+- commits:
+    - body: null
+- commits:
+    - hash: c2f75c077505e8c0a8905838d633a8f74efeef3a
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "client: Fix footer overlay, change video size when device orientation
+        changes"
+- commits:
+    - body: null
+- commits:
+    - hash: 62613aa40fed999037aa9c9d69eedbf1d6e765f8
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "client: Add connection indication"
+- commits:
+    - body: null
+- commits:
+    - hash: 752a08eabc905645e4832e9a75f9a794005d5978
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "client: Add new balena-cam logo"
+- commits:
+    - body: null
+- commits:
+    - hash: 2abf754ed6394dd451612f93b440fa7231a71ffc
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "server: Introduce a small amount of waiting time between frame reads"
+- commits:
+    - body: null
+- commits:
+    - hash: 515f160f1dfd8b6d66f7dc3a8105ec03fd50dac1
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "server: Remove run_in_executor"
+- commits:
+    - body: null
+- commits:
+    - hash: e3d942d00c25832958dbe1a6fb743974edcf324c
+- commits:
+    - author: Daniel Andrade
+- commits:
+    - subject: README suggestions
+- commits:
+    - body: null
+- commits:
+    - hash: ab6db3d190122270c1466a5210dbb1ef4f0d1c92
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "README: Add balena cam logo on README"
+- commits:
+    - body: null
+- commits:
+    - hash: 2331fbf58e20422e4a9b4638604f5dd6ce75051e
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        singed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "server: Initialize global vars only when server script is running"
+- commits:
+    - body: The goal here is to make benchmarking tests to see what is cpu costly.
+- commits:
+    - hash: c5ff462b919261a2a4d7c6c97bdd08a58aeeab17
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "tests: Add tests to benchmark VideoFrame creation on devices"
+- commits:
+    - body: null
+- commits:
+    - hash: 93846b4c66c770313ef23654ef7430cc780d374f
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "start: First run the tests then the app"
+- commits:
+    - body: null
+- commits:
+    - hash: b27b59021d01d66e2720962b9fd18a223e7263b7
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "tests: Change video frame test repetition times"
+- commits:
+    - body: null
+- commits:
+    - hash: 78cbe6a05b1590d9df3eb117844fbd01231abdd1
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "tests: Benchmark the frame capturing object"
+- commits:
+    - body: null
+- commits:
+    - hash: 50bc802d750856d69399fcc2d24411dc78107736
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "tests: Use less repetitions for the tests"
+- commits:
+    - body: null
+- commits:
+    - hash: 64d8e1da213385b5722dbe9502323f922adab1c3
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "tests: Benchmark capturing and converting to VideoFrame using picamera"
+- commits:
+    - body: null
+- commits:
+    - hash: 19c16a86d833ed0bfaa992bc75292de8f1dd5b64
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "server: Print peer_id, pts, timebase"
+- commits:
+    - body: null
+- commits:
+    - hash: b8d3a1fb8b3121d3947a96d4af1f0852e7cd744a
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "server: Make get_latest_frame async"
+- commits:
+    - body: null
+- commits:
+    - hash: 58a323bda261bff80bf98d877bb80c2b008b6cf1
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "server: Remove debugging messages"
+- commits:
+    - body: null
+- commits:
+    - hash: f24657b8905dee9eaa4eeb98761bcd3054ea6dde
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "tests: Stop benchmarking tests from running, remove picamera package"
+- commits:
+    - body: null
+- commits:
+    - hash: 489bd32a18c27d11c1aa2d60b72ef028d7222737
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "tests: Fix benchmarking tests"
+- commits:
+    - body: Remove CameraDevice class based on picamera, rerun tests
+- commits:
+    - hash: d8ffbe386b90321bf56f931e80f3abd4a395fd44
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "client: Detect video freeze, refresh if video is frozen"
+- commits:
+    - body: null
+- commits:
+    - hash: e95f72a35c1c0746e580fb0e6defe18c45472596
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "client: Add extra way to detect frozen video"
+- commits:
+    - body: null
+- commits:
+    - hash: f129cacf2d01d598e484dd4e80de541760be932a
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "client: Close peer connection on tab closing"
+- commits:
+    - body: null
+- commits:
+    - hash: fad42cad18e0fab6f6579ade9036409012c311cb
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+- commits:
+    - subject: "README: Add browsers section on README"
+- commits:
+    - body: null
+- commits:
+    - hash: d192af0729b64b7ad46605b4ca5158629f31e30e
+- commits:
+    - author: Marios Balamatsias
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "compose: Add labels to use the kernel modules"
+- commits:
+    - body: null
+- commits:
+    - hash: d4fbe57317fb6c98b6d2d8077df7d2de7d606307
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "README: Add extra information on README.md"
+- commits:
+    - body: null
+- commits:
+    - hash: 62eec91b673e79caf6d7331916b6ee8f082fc636
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "server: Minor change on the order of events"
+- commits:
+    - body: null
+- commits:
+    - hash: 85235ed4114b78916b87c2677baee218b85899b1
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "UI: Add margin between video and footer on landscape view"
+- commits:
+    - body: null
+- commits:
+    - hash: 297e6b9a87bc66dedb029b13cc9b02337de5e926
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "start.sh: Lock aiortc version"
+- commits:
+    - body: Check if it performs better than the latest version.
+- commits:
+    - hash: 3c18263942a97e9be617ff8c10027e3d82d290e3
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "client: Fix footer display on small screens"
+- commits:
+    - body: null
+- commits:
+    - hash: 5e5ed02ed2084bee030702347ca5e64f4cf9588f
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "app: Separate html from css"
+- commits:
+    - body: Make footer more responsive.
+- commits:
+    - hash: 2d30d9854aa88ed491d3e0bc717f42618b3e6543
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "client: Make video fullscreen on double-tap"
+- commits:
+    - body: |-
+        Works on chrome and firefox.
+        Also refactor some functions.
+- commits:
+    - hash: d2b3d601b04cdf8b765345f8632dd76de7195f37
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "server: Remove unused class"
+- commits:
+    - body: null
+- commits:
+    - hash: a3f6438b7c6ac4654ee65068f2a61bc3b6cc64c5
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "client: Show video container when ready"
+- commits:
+    - body: |-
+        Specifically, show video container when connection
+        state is connected or completed.
+- commits:
+    - hash: 8d6ec10fd35b835dd15194e3b559754c64eb4590
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "client: Show connection error message when connection is closed"
+- commits:
+    - body: null
+- commits:
+    - hash: 13b7dcaf3d9a276a49fdb45720229b38ae8736b8
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "README: Extend readme"
+- commits:
+    - body: null
+- commits:
+    - hash: 9fcbacd5fcd42e570eeb670942863382e7ceeccb
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "client: Check if pc.iceConnectionState is undefined"
+- commits:
+    - body: null
+- commits:
+    - hash: 98841e564c0f63cf95cd9dae12a250b8fc56e208
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "ui: Change display for fail-container"
+- commits:
+    - body: null
+- commits:
+    - hash: c822c511a443c35ffa2137ffdf72d19d711fb903
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "ui: Use rem instead of percentages"
+- commits:
+    - body: null
+- commits:
+    - hash: b50f133108b232c96d9327b15a8fbe75de71df28
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "server: Remove remote peer when ice connection fails"
+- commits:
+    - body: null
+- commits:
+    - hash: d4ae579f84c2281e281aac2e30c1c6afe1dd8b41
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "server: Make new local_video instance for every peer"
+- commits:
+    - body: null
+- commits:
+    - hash: d3256144f5f9d3cd27e74ca482bdebdf69a5102a
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "server: Decouple camera device from LocalVideoStream"
+- commits:
+    - body: null
+- commits:
+    - hash: f86005d227b3adb7985061ab2bc0f9389dbf93bb
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "ui: Add balenaCam logo"
+- commits:
+    - body: null
+- commits:
+    - hash: b6be34b61d1cfd2ffeb65c2a846a32d0e2304e25
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "ui: Add spinner when trying to connect"
+- commits:
+    - body: null
+- commits:
+    - hash: 5b0c5e74a2164633a30656d2aa566b200de4d660
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "ui: Add connection failure message"
+- commits:
+    - body: null
+- commits:
+    - hash: 847645dcb4e06dbc0d29368f4287c4734ef03d56
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@balena.io>
+- commits:
+    - subject: "app: Use the latest aiortc version"
+- commits:
+    - body: |-
+        Still use cv2 to get the camera frames.
+        MediaPlayer class is crashing the container.
+        Works on Firefox!
+        Use new company logos.
+- commits:
+    - hash: a4b5d00213c536acc5b75517cf2cc173a3edbe0d
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@resin.io>
+- commits:
+    - subject: "start.sh: Use specific aiortc version"
+- commits:
+    - body: |-
+        Aiortc changed to a version that is not backwards compatible.
+        This commit locks the version to a working one.
+- commits:
+    - hash: c0b3b172b633628a08cfcb552727028c8064db41
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        connects-to: "#4"
+- commits:
+    - footers:
+        change-type: minor
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@resin.io>
+- commits:
+    - subject: "ui: Add better UI"
+- commits:
+    - body: |-
+        Rename the project to balena.
+        Move client related files to client directory.
+- commits:
+    - hash: f3fcfebe471421565dd7f4d6f157766bd9cddd5a
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@resin.io>
+- commits:
+    - subject: "Dockerfile: Install open-cv"
+- commits:
+    - body: null
+- commits:
+    - hash: d627da453ccd54f2af47a5fb444f47dded9aa770
+- commits:
+    - author: mbalamat
+- commits:
+    - footers:
+        signed-off-by: Marios Balamatsias <marios@resin.io>
+- commits:
+    - subject: "app: Add necessary components"
+- commits:
+    - body: |-
+        Use Raspberry Pi 3 base image [Dockerfile].
+        Use opencv-python to get the video from
+        the default camera device [server.py].
+        Use nginx to proxy the main app to
+        port 80 (Used by public device url) [config].
+        Minor changes in the way that
+        web-rtc offer is created [client.js].
+        Minor cosmetic changes in UI [index.html].
