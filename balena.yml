@@ -1,15 +1,15 @@
-name: balenaCam
+name: balena-cam
 type: sw.application
 description: Network Camera with Raspberry Pi and WebRTC.
 assets:
   repository:
     type: blob.asset
     data:
-      url: 'https://github.com/balenalabs/balena-cam'
+      url: 'https://github.com/balena-labs-projects/balena-cam'
   logo:
     type: blob.asset
     data:
-      url: 'https://raw.githubusercontent.com/balenalabs/balena-cam/master/logo.png'
+      url: 'https://raw.githubusercontent.com/balena-labs-projects/balena-cam/master/logo.png'
 data:
   applicationConfigVariables:
     - BALENA_HOST_CONFIG_start_x: 1
