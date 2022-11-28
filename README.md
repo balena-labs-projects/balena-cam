@@ -1,4 +1,4 @@
-![](https://github.com/balena-labs-projects/balena-cam/blob/master/balena-cam/app/client/balena-cam-readme.png)
+![](https://github.com/balena-labs-projects/balena-cam/blob/master/balena-cam/app/client/balena-cam-readme.png?raw=true)
 
 Live stream your balena device's camera feed.
 
@@ -16,14 +16,16 @@ One-click deploy to balenaCloud:
 - Clone this repository to your local workspace.
 - Unset (delete) the environment variable `BALENA_HOST_CONFIG_gpu_mem` or `RESIN_HOST_CONFIG_gpu_mem` if exists, from the `Configuration` side tab under "fleets".
 - Set these variables in the `Configuration` side tab under "fleets".
+
   - `BALENA_HOST_CONFIG_start_x` = `1`
   - Set all the following `gpu_mem` variables so your Pi can autoselect how much memory to allocate for hardware accelerated graphics, based on how much RAM it has available
 
-    | Key                                  | Value
-    |--------------------------------------|----------
-    |**`BALENA_HOST_CONFIG_gpu_mem_256`**  | **`192`**
-    |**`BALENA_HOST_CONFIG_gpu_mem_512`**  | **`256`**
-    |**`BALENA_HOST_CONFIG_gpu_mem_1024`** | **`448`**
+    | Key                                   | Value     |
+    | ------------------------------------- | --------- |
+    | **`BALENA_HOST_CONFIG_gpu_mem_256`**  | **`192`** |
+    | **`BALENA_HOST_CONFIG_gpu_mem_512`**  | **`256`** |
+    | **`BALENA_HOST_CONFIG_gpu_mem_1024`** | **`448`** |
+
 - Using [Balena CLI](https://www.balena.io/docs/reference/cli/), push the code with `balena push <fleet-name>`.
 - See the magic happening, your device is getting updated 🌟Over-The-Air🌟!
 - In order for your device to be accessible over the internet, toggle the switch called `PUBLIC DEVICE URL`.
@@ -33,14 +35,15 @@ One-click deploy to balenaCloud:
 
 To protect your balenaCam devices using a username and a password set the following environment variables.
 
-| Key            | Value
-|----------------|---------------------------
-|**`username`**  | **`yourUserNameGoesHere`**
-|**`password`**  | **`yourPasswordGoesHere`**
+| Key            | Value                      |
+| -------------- | -------------------------- |
+| **`username`** | **`yourUserNameGoesHere`** |
+| **`password`** | **`yourPasswordGoesHere`** |
 
-💡 **Tips:** 💡 
-* You can set them as [fleet environment variables](https://www.balena.io/docs/learn/manage/serv-vars/#fleet-environment-and-service-variables) and every new balenaCam device you add will be password protected.
-* You can set them as [device environment variables](https://www.balena.io/docs/learn/manage/serv-vars/#device-environment-and-service-variables) and the username and password will be different on each device.
+💡 **Tips:** 💡
+
+- You can set them as [fleet environment variables](https://www.balena.io/docs/learn/manage/serv-vars/#fleet-environment-and-service-variables) and every new balenaCam device you add will be password protected.
+- You can set them as [device environment variables](https://www.balena.io/docs/learn/manage/serv-vars/#device-environment-and-service-variables) and the username and password will be different on each device.
 
 ### Optional Settings
 
@@ -49,15 +52,14 @@ To protect your balenaCam devices using a username and a password set the follow
 
 ### TURN server configuration
 
-
 If you have access to a TURN server and you want your balenaCam devices to use it. You can easily configure it using the following environment variables. When you set them all the app will use that TURN server as a fallback mechanism when a direct WebRTC connection is not possible.
 
-| Key            | Value
-|----------------|---------------------------
-|**`STUN_SERVER`**  | **`stun:stun.l.google.com:19302`**
-|**`TURN_SERVER`**  | **`turn:<yourTURNserverIP>:<yourTURNserverPORT>`**
-|**`TURN_USERNAME`**  | **`<yourTURNserverUsername>`**
-|**`TURN_PASSWORD`**  | **`yourTURNserverPassword`**
+| Key                 | Value                                              |
+| ------------------- | -------------------------------------------------- |
+| **`STUN_SERVER`**   | **`stun:stun.l.google.com:19302`**                 |
+| **`TURN_SERVER`**   | **`turn:<yourTURNserverIP>:<yourTURNserverPORT>`** |
+| **`TURN_USERNAME`** | **`<yourTURNserverUsername>`**                     |
+| **`TURN_PASSWORD`** | **`yourTURNserverPassword`**                       |
 
 ## Additional Information
 
