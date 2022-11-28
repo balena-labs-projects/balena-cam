@@ -1,4 +1,16 @@
 - commits:
+    - subject: Add Labs GitHub actions
+      hash: 2dcb7d2508cb178f02054efda7f0bd7a6e27cf3c
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: maggie0002
+      nested: []
+  version: 0.2.11
+  title: ""
+  date: 2022-11-28T08:35:19.958Z
+- commits:
     - subject: Updating references from balenalabs to balena-labs-projects
       hash: f5d16e6f4764e9d82579f26d01e4a0b941de835e
       body: ""
