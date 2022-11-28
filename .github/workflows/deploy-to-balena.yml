@@ -1,0 +1,33 @@
+name: "Deploy to Balena"
+
+on:
+  pull_request:
+    types: [opened, synchronize, closed]
+    branches:
+      - master
+      - main
+    paths-ignore:
+      - 'docs/**'
+
+env:
+  BALENA_APP: balenalabs/balena-cam
+
+jobs:
+  build:
+    name: "Deploy-to-Balena"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v3
+
+      - name: Update balena.yml
+        uses: balena-io-experimental/balena.yml-action@main
+        with:
+          # Synchronise the Balena Hub README with the GitHub README
+          sync_readme: true
+
+      - name: Deploy to Balena
+        uses: balena-io/deploy-to-balena-action@master
+        with:
+          balena_token: ${{ secrets.BALENA_API_KEY }}
+          fleet: ${{ env.BALENA_APP }}
