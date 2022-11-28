@@ -1,6 +1,6 @@
 ![](https://github.com/balena-labs-projects/balena-cam/blob/master/balena-cam/app/client/balena-cam-readme.png)
 
-Live stream your balena device's camera feed.
+Live stream your balena device's camera feed. trst
 
 ## Getting started
 
