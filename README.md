@@ -8,7 +8,7 @@ Running this project is as simple as deploying it to a fleet.
 
 One-click deploy to balenaCloud:
 
-[![](https://balena.io/deploy.png)](https://dashboard.balena-cloud.com/deploy)
+[![deploy button](https://balena.io/deploy.png)](https://dashboard.balena-cloud.com/deploy?repoUrl=https://github.com/balenalabs/balena-cam)
 
 **or**
 
