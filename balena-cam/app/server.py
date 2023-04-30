@@ -153,6 +153,10 @@ async def mjpeg_handler(request):
         await response.write(b"\r\n")
     return response
 
+async def jpeg_handler(request):
+    response = web.Response(body=await camera_device.get_jpeg_frame(), content_type="image/jpeg")
+    return response
+
 async def config(request):
     return web.Response(
         content_type='application/json',
@@ -216,5 +220,6 @@ if __name__ == '__main__':
     app.router.add_get('/style.css', stylesheet)
     app.router.add_post('/offer', offer)
     app.router.add_get('/mjpeg', mjpeg_handler)
+    app.router.add_get('/jpeg', jpeg_handler)
     app.router.add_get('/ice-config', config)
     web.run_app(app, port=80)
