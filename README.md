@@ -10,6 +10,12 @@ One-click deploy to balenaCloud:
 
 [![](https://balena.io/deploy.png)](https://dashboard.balena-cloud.com/deploy)
 
+- Name your application and select the type of device you are using.  If this is your first application, do not change anything else.
+- Once in the dashboard choose, "Add Device".
+- If using Wifi for the project change the switch to "Wifi and Ethernet" and enter credentials.
+- Click "Download BalenaOS"
+- When the download is done use BalenaEtcher to Flash the SD card for the device.
+
 **or**
 
 - Sign up on [balena.io](https://balena.io/) and follow our [Getting Started Guide](https://balena.io/docs/learn/getting-started).
