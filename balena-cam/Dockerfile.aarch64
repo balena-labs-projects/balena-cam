@@ -29,9 +29,11 @@ RUN apt-get update && \
 
 # Enable the v4l2 driver for the Raspberry Pi camera
 #RUN printf "bcm2835-v4l2\n" >> /etc/modules
+
 RUN python3 -m pip install --upgrade pip setuptools wheel
 RUN python3 -m pip install async-timeout av --index-url https://www.piwheels.org/simple
 RUN python3 -m pip install -U aiohttp[speedups] aiohttp_basicauth aioice aiortc numpy opencv-python-headless --index-url https://www.piwheels.org/simple
+
 
 WORKDIR /usr/src/app
 
