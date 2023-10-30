@@ -1,4 +1,4 @@
-import asyncio, json, os, cv2, platform, sys
+import asyncio, json, os, cv2, platform, subprocess, sys
 from time import sleep
 from aiohttp import web
 from av import VideoFrame
@@ -165,10 +165,17 @@ async def on_shutdown(app):
     await asyncio.gather(*coros)
 
 def checkDeviceReadiness():
+    # TODO : check user is in video group !
+    # TODO : check if we are on a RPI
     if not os.path.exists('/dev/video0') and platform.system() == 'Linux':
         print('Video device is not ready')
         print('Trying to load bcm2835-v4l2 driver...')
-        os.system('bash -c "modprobe bcm2835-v4l2"')
+        try:
+            subprocess.run(['modprobe', 'bcm2835-v4l2'], check=True)
+        except FileNotFoundError:
+            print("Cannot modeprobe bcm2835-v4l2, not a Raspberry-Pi ?")
+        except subprocess.CalledProcessError as err:
+            print(err)
         sleep(1)
         sys.exit()
     else:
@@ -202,7 +209,7 @@ if __name__ == '__main__':
         print('Set the username and password environment variables \nto enable authorization.')
         print('For more info visit: \nhttps://github.com/balena-io-playground/balena-cam')
         print('#############################################################\n')
-    
+
     # Factory to create peerConnections depending on the iceServers set by user
     pc_factory = PeerConnectionFactory()
 
